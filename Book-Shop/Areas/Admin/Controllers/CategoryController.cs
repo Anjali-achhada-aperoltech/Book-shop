@@ -61,6 +61,7 @@ namespace Book_Shop.Controllers
         {
             try
             {
+                
                 var data = await service.GetAsync(id);
                 return View(data);
             }

@@ -13,6 +13,7 @@ namespace Book.Interfaces.Services
         Task<List<CreateBookDTO>> GetAllAsync();
 
         Task<CreateBookDTO> GetAsync(Guid id);
+        Task<BookItemsDTO> GetItemsAsync(Guid id);
 
         Task<BookItemsDTO> AddAsync(BookItemsDTO model);
 

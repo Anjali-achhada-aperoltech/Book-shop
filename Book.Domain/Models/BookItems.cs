@@ -19,6 +19,8 @@ namespace Book.Domain.Models
         [Display(Name = "Book Description")]
 
         public string Description {  get; set; }
+
+        public string AuthorName {  get; set; }
         [Required]
         [StringLength(50)]
         [Display(Name = "Book Price")]
@@ -31,7 +33,7 @@ namespace Book.Domain.Models
         public Category Category { get; set; }
         [Required]
 
-        public string ImageUrl {  get; set; }
+        public string FrontImage {  get; set; }
         public DateTime CreatedDate { get; set;}=DateTime.Now;
         public DateTime UpdatedDate { get; set;} =DateTime.Now;
         public string? CreatedBy { get; set; }

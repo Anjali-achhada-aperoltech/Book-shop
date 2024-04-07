@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Book.Business.DTO
 {
-    public class BookItemsDTO
+    public class BookItemsDTO:BaseDTO
     {
         [Required]
         [StringLength(50)]
@@ -19,8 +19,11 @@ namespace Book.Business.DTO
         public string Description { get; set; }
         [Required]
         [StringLength(50)]
+        [Display(Name = "Author Name")]
+        public string AuthorName { get; set; }
+        [Required]
+       
         [Display(Name = "Book Price")]
-
 
         public int price { get; set; }
         [Required]
@@ -28,6 +31,9 @@ namespace Book.Business.DTO
         public Guid CategoryId { get; set; }
         [Required]
 
-        public string ImageUrl { get; set; }
+        public string FrontImage { get; set; }
+       
+        public string CreatedBy { get; set; }
+        public string ModifiedBy { get; set; }
     }
 }

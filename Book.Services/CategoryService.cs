@@ -19,13 +19,13 @@ namespace Book.Services
 
         public async Task<CategoryDto> AddAsync(CategoryDto model)
         {
-            model.Id= Guid.NewGuid();
+            model.Id = Guid.NewGuid();
             Category category = new Category();
             category.Name = model.Name;
             category.Description = model.Description;
             await unitOfWork.CategoryReposititory.AddAsync(category);
             return model;
-            
+
         }
 
         public async Task<bool> DeleteAsync(Guid id)
@@ -34,7 +34,7 @@ namespace Book.Services
             if (data != null)
             {
                 data.IsDeleted = true;
-               await unitOfWork.CategoryReposititory.DeleteAsync(data);
+                await unitOfWork.CategoryReposititory.DeleteAsync(data);
                 return true;
             }
             else
@@ -47,23 +47,29 @@ namespace Book.Services
         public async Task<List<CategoryDto>> GetAllAsync()
         {
             List<CategoryDto> vm = new List<CategoryDto>();
-             var data = await unitOfWork.CategoryReposititory.FindByAsync(x => !x.IsDeleted);
-            foreach(var item in data) {
+            var data = await unitOfWork.CategoryReposititory.FindByAsync(x => !x.IsDeleted);
+            foreach (var item in data) {
                 vm.Add(new CategoryDto { Id = item.Id, Name = item.Name, Description = item.Description });
-               }
+            }
             return vm;
         }
 
         public async Task<CategoryDto> GetAsync(Guid id)
         {
-            var data = await unitOfWork.CategoryReposititory.GetAsync(id);
-            
-                CategoryDto vm = new CategoryDto();
-                vm.Name = data.Name;
-                vm.Description = data.Description;
-                return vm;
-           
-            
+            try
+            {
+                var data = await unitOfWork.CategoryReposititory.GetAsync(id);
+                
+                    CategoryDto vm = new CategoryDto();
+                    vm.Name = data.Name;
+                    vm.Description = data.Description;
+                    return vm;
+                
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
             
         }
 
