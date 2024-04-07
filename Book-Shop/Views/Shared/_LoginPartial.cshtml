@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
+<ul class="navabar-nav">
+    @if (signInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="text-muted text-dark">Hello @userManager.GetUserName</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-danger">Logout</a>
+        </li>
+    }
+else{
+    <li class="nav-item">
+        <a class="text-muted text-dark">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-danger">Register</a>
+    </li>
+}
+</ul>
