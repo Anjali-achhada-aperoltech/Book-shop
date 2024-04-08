@@ -1,3 +1,4 @@
+using Book.Interfaces.Services;
 using Book_Shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -6,16 +7,24 @@ namespace Book_Shop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public readonly IBookItemService _service;
+        public HomeController(IBookItemService service)
         {
-            _logger = logger;
+            _service = service;
         }
 
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var data =await  _service.GetAllAsync();
+            if (data == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(data);
+            }
         }
 
         public IActionResult Privacy()
