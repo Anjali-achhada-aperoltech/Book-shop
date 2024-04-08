@@ -1,8 +1,43 @@
-﻿@{
+﻿@model IEnumerable<Book.Business.DTO.CreateBookDTO>
+@{
+
     ViewData["Title"] = "Home Page";
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="latest-products">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <h2>Latest BookItems</h2>
+                    <a href="products.html">view all products <i class="fa fa-angle-right"></i></a>
+                </div>
+            </div>
+           
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="product-item">
+                        <a href="#"><img src="~/@item.FrontImage" height="180px" width="300px" alt=""></a>
+                        <div class="down-content">
+                            <a href="#"><h4>@item.Name</h4></a>
+                            <h6><i class="fa-solid fa-indian-rupee-sign"></i>  @item.price</h6>
+                            <p>@item.Description</p>
+                            <ul class="stars">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                            </ul>
+                            <span>Reviews (24)</span>
+                        </div>
+                    </div>
+                </div>
+            }             
+
+
 </div>
+
+
