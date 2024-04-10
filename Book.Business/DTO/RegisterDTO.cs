@@ -9,18 +9,26 @@ namespace Book.Business.DTO
 {
     public class RegisterDTO
     {
+
+        
+
         [EmailAddress]
-        [Required(ErrorMessage="Please enter email")]
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string? FirstName { get; set; }
+        [Required]
+        public string? LastName { get; set; }
+        [DataType(DataType.Date)]
 
-        public string Email {  get; set; }
-        [Required(ErrorMessage = "Please enter password")]
+        public DateTime? DateOfBirth { get; set; }
+
+
+        [Required]
         [DataType(DataType.Password)]
-
-
         public string Password { get; set; }
-        [Required(ErrorMessage = "Please Enter Confirm Password")]
-        [Compare("Password",ErrorMessage ="Password and Confirm password can not match")]
 
-        public string ConfrimPassword {  get; set; }
+       public string ConfrimPassword {  get; set; }
+
     }
 }

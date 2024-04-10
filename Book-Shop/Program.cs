@@ -1,4 +1,5 @@
 using Book.Domain.Context;
+using Book.Domain.Models;
 using Book.Interfaces.Repositiory;
 using Book.Interfaces.Services;
 using Book.Reposittiory;
@@ -19,7 +20,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookItemsRepositiory,BookItemsRepostitory>();
 builder.Services.AddScoped<IBookItemService, BookItemsService>();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+builder.Services.AddIdentity<Users, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.ConfigureApplicationCookie(option =>
 {

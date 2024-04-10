@@ -15,8 +15,13 @@ namespace Book.Domain.Context
         {
             
         }
+        public BookDbContext()
+        {
+            
+        }
         public DbSet<Category> Categories { get; set; }
         public DbSet<BookItems> BookItems { get; set; }
+
     }
 
 }
