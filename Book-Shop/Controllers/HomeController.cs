@@ -26,7 +26,19 @@ namespace Book_Shop.Controllers
                 return View(data);
             }
         }
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var data = await _service.GetAsync(id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(data);
 
+            }
+        }
         public IActionResult Privacy()
         {
             return View();

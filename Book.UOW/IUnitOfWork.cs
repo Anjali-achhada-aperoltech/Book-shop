@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Book.UOW
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         ICategoryReposititory CategoryReposititory { get; }
         IBookItemsRepositiory bookItemsRepositiory { get; }
