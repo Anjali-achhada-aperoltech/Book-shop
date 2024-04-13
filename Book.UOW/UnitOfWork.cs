@@ -17,10 +17,12 @@ namespace Book.UOW
             this._context = _context;
             CategoryReposititory = new CategoryRepositiory(_context);
             bookItemsRepositiory = new BookItemsRepostitory(_context);
+            cartReposititory = new CartRepostitory(_context);
         }
         private bool disposed;
         public ICategoryReposititory CategoryReposititory { get; private set; }
         public IBookItemsRepositiory bookItemsRepositiory { get; private set; }
+        public ICartReposititory cartReposititory { get; private set; }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed && disposing)

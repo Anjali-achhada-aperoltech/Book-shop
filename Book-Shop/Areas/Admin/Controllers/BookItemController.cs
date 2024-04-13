@@ -81,6 +81,7 @@ namespace Book_Shop.Areas.Admin.Controllers
         }
         public async Task<string> SaveImageAsync(IFormFile FrontImage)
         {
+            string imageurl=null;
             var uploadsFolderPath = Path.Combine(_environment.WebRootPath, "uploads");
             if (!Directory.Exists(uploadsFolderPath))
                 Directory.CreateDirectory(uploadsFolderPath);

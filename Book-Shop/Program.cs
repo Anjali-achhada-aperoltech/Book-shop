@@ -19,8 +19,8 @@ builder.Services.AddScoped<ICategoryReposititory, CategoryRepositiory>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookItemsRepositiory,BookItemsRepostitory>();
 builder.Services.AddScoped<IBookItemService, BookItemsService>();
-
-
+builder.Services.AddScoped<ICartReposititory, CartRepostitory>();
+builder.Services.AddScoped<ICartService,CartService>();
 builder.Services.AddIdentity<Users, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.ConfigureApplicationCookie(option =>
