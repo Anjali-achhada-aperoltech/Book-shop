@@ -34,6 +34,7 @@ namespace Book.Domain.Models
         [Required]
 
         public string FrontImage {  get; set; }
+        public ICollection<Cart> Carts {  get; set; }
         public DateTime CreatedDate { get; set;}=DateTime.Now;
         public DateTime UpdatedDate { get; set;} =DateTime.Now;
         public string? CreatedBy { get; set; }

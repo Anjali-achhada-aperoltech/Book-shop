@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Book.Domain.Migrations.ApplicationDb
+namespace Book.Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240410120240_ddd")]
-    partial class ddd
+    [Migration("20240412104703_add-data")]
+    partial class adddata
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,8 @@ namespace Book.Domain.Migrations.ApplicationDb
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DateOfBirth")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -55,10 +54,10 @@ namespace Book.Domain.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")

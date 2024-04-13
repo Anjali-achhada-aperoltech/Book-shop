@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-    </div>
+<p>
+    <a asp-action="Create" class="btn btn-success"><i class="fa-solid fa-plus"></i>  Create New</a>
+</p>
+
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="employeesTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -27,9 +27,9 @@
                             <td>@item.Description</td>
                             <td>
 
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                <a asp-action="Details" asp-route-id="@item.Id"> Details</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">  </i></a>
+                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">  </i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i></a>
                             </td>
 
                         </tr>
@@ -44,9 +44,10 @@
                 
 
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
 
+    <script>
+        $(document).ready(function () {
+            $('#employeesTable').DataTable();
+        });
+    </script>
 }

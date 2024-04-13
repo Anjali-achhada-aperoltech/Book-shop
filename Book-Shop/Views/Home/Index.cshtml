@@ -5,7 +5,6 @@
 
 }
 
-
 <div class="latest-products">
     <div class="container">
         <div class="row">
@@ -24,7 +23,7 @@
                         <div class="down-content">
                             <a href="#"><h4>@item.Name</h4></a>
                             <h6><i class="fa-solid fa-indian-rupee-sign"></i>  @item.price</h6>
-                            <p>@item.Description</p>
+                          @*   <p>@item.Description</p> *@
                             <ul class="stars">
                                 <li><i class="fa fa-star"></i></li>
                                 <li><i class="fa fa-star"></i></li>
@@ -33,7 +32,7 @@
                                 <li><i class="fa fa-star"></i></li>
                             </ul>
                             <a asp-action="Details" asp-controller="Home" class="btn btn-primary m-2" asp-route-id="@item.Id">Details</a>
-                            <a asp-action="" asp-controller="" class="btn btn-primary" asp-route-id=""><i class="fa-solid fa-cart-shopping"></i>Add To Cart</a>
+                            <a asp-action="AddCart" asp-controller="Cart" class="btn btn-primary" asp-route-id="@item.Id"><i class="fa-solid fa-cart-shopping"></i>Add To Cart</a>
                           
                         </div>
                     </div>
