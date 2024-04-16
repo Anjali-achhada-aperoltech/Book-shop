@@ -10,5 +10,10 @@ namespace Book.Interfaces.Services
     public interface ICartService
     {
         Task<CartDto> InsertAsync(CartDto cart,Guid Id);
+        Task<CartVm> GetallAsync();
+        Task<bool> DeleteAsync(Guid id);
+        Task<bool> IncrementCartItem(Guid id);
+        Task<bool>DecreMentItem( int quantity, Guid id);
+
     }
 }

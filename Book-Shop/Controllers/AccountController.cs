@@ -8,9 +8,9 @@ namespace Book_Shop.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<Users> _userManager;
-        private readonly SignInManager<Users> _signInManager;
-        public AccountController(UserManager<Users>userManager,SignInManager<Users>signInManager)
+        private readonly UserManager<Applicationuser> _userManager;
+        private readonly SignInManager<Applicationuser> _signInManager;
+        public AccountController(UserManager<Applicationuser> userManager,SignInManager<Applicationuser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -38,7 +38,7 @@ namespace Book_Shop.Controllers
                         ModelState.AddModelError(string.Empty, "Email is already exists");
                         return View(v1);
                     }
-                    var users = new Users
+                    var users = new Applicationuser
                     {
                         UserName=v1.Email,
                         Email=v1.Email,
@@ -78,7 +78,7 @@ namespace Book_Shop.Controllers
         {
             try
             {
-                Users checkemail = await _userManager.FindByEmailAsync(vm.Email);
+                Applicationuser checkemail = await _userManager.FindByEmailAsync(vm.Email);
                 if (checkemail == null) {
                     ModelState.AddModelError(string.Empty, "Email not found");
                     return View(vm);

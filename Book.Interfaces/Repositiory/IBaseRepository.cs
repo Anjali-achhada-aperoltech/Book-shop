@@ -25,6 +25,7 @@ namespace ROMS.Interfaces.Repositories
         Task<bool> DeleteAllAsync(IEnumerable<T> entities, bool isHardDelete = false);
 
         Task<int> UpdateAsync(T entity);
+        Task<T> FindSingleByAsync(Expression<Func<T, bool>> predicate, string includeProperties = "");
 
         Task<int> SaveAsync();
     }
