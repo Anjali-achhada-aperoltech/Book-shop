@@ -129,7 +129,9 @@ namespace ROMS.Repositories
             this.Context.Dispose();
         }
 
-        
-
+        public Task<T> FindSingleByAsync(Expression<Func<T, bool>> predicate, string includeProperties = "")
+        {
+            throw new NotImplementedException();
         }
+    }
     }
