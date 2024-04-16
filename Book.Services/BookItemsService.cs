@@ -16,8 +16,8 @@ namespace Book.Services
 {
     public class BookItemsService : ServiceBase,IBookItemService
     {
-        private readonly UserManager<Users> _userManager;
-        public BookItemsService(IUnitOfWork unitOfWork,UserManager<Users> userManager) : base(unitOfWork)
+        private readonly UserManager<Applicationuser> _userManager;
+        public BookItemsService(IUnitOfWork unitOfWork,UserManager<Applicationuser> userManager) : base(unitOfWork)
         {
             _userManager = userManager;
         }

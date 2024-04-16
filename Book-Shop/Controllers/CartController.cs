@@ -20,7 +20,36 @@ namespace Book_Shop.Controllers
             var data=await cartService.InsertAsync(c1, Id);
             return View();
         }
+       public async Task<IActionResult> Index()
+        {
+            var data =await  cartService.GetallAsync();
+            if (data == null)
+            {
+                return NotFound();
+            }
+            
+            return View(data);
+        }
+        [HttpPost]
+    
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var data = await cartService.DeleteAsync(id);
+            TempData["delete"] = "Delete data successfully";
+            return RedirectToAction("Index", "Cart");
+        }
+        public async Task<IActionResult>plus(Guid id)
+        {
+            var data=await cartService.IncrementCartItem(id);
+            return RedirectToAction("Index","cart");
+        }
+        public async Task<IActionResult>minus(int quantity,Guid id)
+        {
+            var data = await cartService.DecreMentItem(quantity,id);
+            return RedirectToAction("Index");
+        }
 
     }
     }
+
 

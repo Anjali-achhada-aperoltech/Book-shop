@@ -15,10 +15,15 @@ namespace Book.Domain.Models
         public Guid? BookitemId { get; set; }
         [JsonIgnore]
         public BookItems  BookItem { get; set; }
-        public string? userId { get; set; }
-        [JsonIgnore]
-        public Users user { get; set; }
+        public string? ApplicationuserId { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime UpdatedDate { get; set; } = DateTime.Now;
+        public string? CreatedBy { get; set; }
+        public string? ModifiedBy { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
 
-       
+
+
     }
 }

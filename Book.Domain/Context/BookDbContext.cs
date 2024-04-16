@@ -22,6 +22,7 @@ namespace Book.Domain.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<BookItems> BookItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
+      
         
     }
 
