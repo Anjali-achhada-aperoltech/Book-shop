@@ -129,9 +129,24 @@ namespace ROMS.Repositories
             this.Context.Dispose();
         }
 
-        public Task<T> FindSingleByAsync(Expression<Func<T, bool>> predicate, string includeProperties = "")
+        public async Task<T> FindSingleByAsync(Expression<Func<T, bool>> predicate, string includeProperties = "")
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = Context.Set<T>();
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            try
+            {
+                return await query.SingleOrDefaultAsync(predicate);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it specifically
+                throw;
+            }
         }
+
     }
-    }
+}
