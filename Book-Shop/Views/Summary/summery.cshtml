@@ -1,0 +1,29 @@
+﻿
+@model Book.Business.DTO.CartVm;
+<form action="summery" method="post">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Phone</label>
+        <input type="number" asp-for="@Model.phone" placeholder="Enter Phone Number">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">City</label>
+        <input type="city" asp-for="City" class="form-control"  placeholder="City">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">State</label>
+        <input type="state" asp-for="state" class="form-control" placeholder="state">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Address</label>
+        <input asp-for="Address" class="form-control" placeholder="Address">
+    </div>
+     @* @foreach(var item in Model.Carts)
+    {
+        <span>@item.BookItem.Name</span>
+        <span>@item.quantity</span>
+        <span>@(item.BookItem.price)*(@item.quantity)</span>
+    }  *@
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

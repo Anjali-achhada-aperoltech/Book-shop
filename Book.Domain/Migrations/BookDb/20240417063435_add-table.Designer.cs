@@ -4,16 +4,19 @@ using Book.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Book.Domain.Migrations
+namespace Book.Domain.Migrations.BookDb
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417063435_add-table")]
+    partial class addtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,6 +120,96 @@ namespace Book.Domain.Migrations
                     b.ToTable("Carts");
                 });
 
+            modelBuilder.Entity("Book.Domain.Models.OrderDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BookItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderHeaderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookItemId");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.ToTable("orderDetails");
+                });
+
+            modelBuilder.Entity("Book.Domain.Models.OrderHeader", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Carrier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfOrder")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfPayement")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateShipping")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("OrderTotal")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SessionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrackingNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("phone")
+                        .HasColumnType("int");
+
+                    b.Property<string>("state")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderHeaders");
+                });
+
             modelBuilder.Entity("Book_Shop.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -174,6 +267,25 @@ namespace Book.Domain.Migrations
                         .HasForeignKey("BookitemId");
 
                     b.Navigation("BookItem");
+                });
+
+            modelBuilder.Entity("Book.Domain.Models.OrderDetail", b =>
+                {
+                    b.HasOne("Book.Domain.Models.BookItems", "BookItem")
+                        .WithMany()
+                        .HasForeignKey("BookItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Book.Domain.Models.OrderHeader", "OrderHeader")
+                        .WithMany()
+                        .HasForeignKey("OrderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookItem");
+
+                    b.Navigation("OrderHeader");
                 });
 
             modelBuilder.Entity("Book.Domain.Models.BookItems", b =>

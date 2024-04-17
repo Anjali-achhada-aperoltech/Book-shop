@@ -12,5 +12,8 @@ namespace Book.UOW
         ICategoryReposititory CategoryReposititory { get; }
         IBookItemsRepositiory bookItemsRepositiory { get; }
         ICartReposititory cartReposititory { get; }
+        IOrderHeaderRepositiory orderHeaderRepositiory { get; }
+        IOrderDetailRepositiory orderDetailRepositiory { get; }
+
     }
 }

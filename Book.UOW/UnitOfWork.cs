@@ -18,11 +18,15 @@ namespace Book.UOW
             CategoryReposititory = new CategoryRepositiory(_context);
             bookItemsRepositiory = new BookItemsRepostitory(_context);
             cartReposititory = new CartRepostitory(_context);
+            orderHeaderRepositiory = new OrderHeaderRepositiory(_context);
+            orderDetailRepositiory=new OrderDetailRepositiory(_context);
         }
         private bool disposed;
         public ICategoryReposititory CategoryReposititory { get; private set; }
         public IBookItemsRepositiory bookItemsRepositiory { get; private set; }
         public ICartReposititory cartReposititory { get; private set; }
+        public IOrderHeaderRepositiory orderHeaderRepositiory { get; private set; }
+        public IOrderDetailRepositiory orderDetailRepositiory { get; private set; }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed && disposing)

@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book-Shop", "Book-Shop\Book-Shop.csproj", "{9F1994AD-BF67-4640-BDFA-B2F93423422E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book-Shop", "Book-Shop\Book-Shop.csproj", "{9F1994AD-BF67-4640-BDFA-B2F93423422E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{E8BC17C4-6082-45C7-9A8E-140180FA169B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.Business", "Book.Business\Book.Business.csproj", "{09095050-D7EB-4DA1-9458-A08E2CE054E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book.Business", "Book.Business\Book.Business.csproj", "{09095050-D7EB-4DA1-9458-A08E2CE054E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.Interfaces", "Book.Interfaces\Book.Interfaces.csproj", "{19A5BB82-B3B2-4BDB-83C1-58B245B975A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book.Interfaces", "Book.Interfaces\Book.Interfaces.csproj", "{19A5BB82-B3B2-4BDB-83C1-58B245B975A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.Reposittiory", "Book.Reposittiory\Book.Reposittiory.csproj", "{FFEA3DA6-A6EB-4EB7-B168-5958EF451E88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book.Reposittiory", "Book.Reposittiory\Book.Reposittiory.csproj", "{FFEA3DA6-A6EB-4EB7-B168-5958EF451E88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.Services", "Book.Services\Book.Services.csproj", "{E69D7AAF-93A0-4490-8287-4BD3865CB391}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book.Services", "Book.Services\Book.Services.csproj", "{E69D7AAF-93A0-4490-8287-4BD3865CB391}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.UOW", "Book.UOW\Book.UOW.csproj", "{618F3877-C97D-42BA-8218-E75E9E3D1A39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book.UOW", "Book.UOW\Book.UOW.csproj", "{618F3877-C97D-42BA-8218-E75E9E3D1A39}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{11F25789-755F-421F-80C6-77F1D3908EE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book.Domain", "Book.Domain\Book.Domain.csproj", "{9D7E0415-4030-44D0-B8EC-077BB98EA102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book.Domain", "Book.Domain\Book.Domain.csproj", "{9D7E0415-4030-44D0-B8EC-077BB98EA102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

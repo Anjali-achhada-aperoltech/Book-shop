@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Book.Domain.Migrations.ApplicationDb
+namespace Book.Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240414034020_add-idnetity")]
-    partial class addidnetity
+    [Migration("20240417063241_add-identity")]
+    partial class addidentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

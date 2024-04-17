@@ -2,6 +2,7 @@
 using Book.Domain.Models;
 using Book.Interfaces.Services;
 using Book.UOW;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace Book_Shop.Controllers
             var data=await cartService.InsertAsync(c1, Id);
             return View();
         }
+        [Authorize]
        public async Task<IActionResult> Index()
         {
             var data =await  cartService.GetallAsync();
