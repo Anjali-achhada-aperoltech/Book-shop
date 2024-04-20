@@ -4,7 +4,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddCart">
+        <form id="add-to-cart-form" asp-action="AddCart">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="BookitemId" class="control-label"></label>
@@ -24,6 +24,7 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+                <div id="result-message" style="display: none;"></div>
         </form>
     </div>
 </div>
@@ -31,4 +32,33 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+@section scripts{
+<script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#add-to-cart-form').on('submit', function (e) {
+                e.preventDefault(); // Prevent the default form submission
+                var formData = $(this).serialize(); // Serialize the form data
 
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#result-message').text(response.message + " - " + response.productName).show();
+                        } else {
+                            $('#result-message').text(response.message).show();
+                        }
+                    },
+                    error: function () {
+                        $('#result-message').text('Error: Could not contact server.').show();
+                    }
+                });
+            });
+        });
+    </script>
+
+}

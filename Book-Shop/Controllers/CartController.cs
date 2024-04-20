@@ -15,11 +15,20 @@ namespace Book_Shop.Controllers
         {
             cartService= service;
         }
+        [Authorize]
         public async Task<IActionResult> AddCart(CartDto c1,Guid Id)
         {
             c1.BookitemId =Id;
             var data=await cartService.InsertAsync(c1, Id);
-            return View();
+
+            if (data != null && data.Id != Guid.Empty) // assuming an empty Guid indicates failure
+            {
+                return Json(new { success = true, message = "Product added to cart successfully!" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Failed to add product to cart." });
+            }
         }
         [Authorize]
        public async Task<IActionResult> Index()

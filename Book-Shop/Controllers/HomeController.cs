@@ -30,11 +30,14 @@ namespace Book_Shop.Controllers
             }
             if (!string.IsNullOrEmpty(Searchitems))
             {
-                result=result.Where(x=>x.Name.Contains(Searchitems)|| x.CategoryName.Contains(Searchitems)).ToList();
+                Searchitems = Searchitems.Trim();
+                result = result.Where(x => x.Name.Contains(Searchitems, StringComparison.OrdinalIgnoreCase)
+                                        || x.CategoryName.Contains(Searchitems, StringComparison.OrdinalIgnoreCase))
+                               .ToList();
             }
-            
-            
-            
+
+
+
             return View(result);
            
         }

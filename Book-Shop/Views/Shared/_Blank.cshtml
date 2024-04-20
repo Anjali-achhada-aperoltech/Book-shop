@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Book_Shop.styles.css" asp-append-version="true" />
+    <link href="~/Client/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Client/assets/fonts/FontAwesome.otf">
+    <link rel="stylesheet" href="~/Client/assets/css/templatemo-sixteen.css">
+    <link rel="stylesheet" href="~/Client/assets/css/owl.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/Client/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Client/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- Additional Scripts -->
+    <script src="~/Client/assets/js/custom.js"></script>
+    <script src="~/Client/assets/js/owl.js"></script>
+    <script src="~/Client/assets/js/slick.js"></script>
+    <script src="~/Client/assets/js/isotope.js"></script>
+    <script src="~/Client/assets/js/accordions.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

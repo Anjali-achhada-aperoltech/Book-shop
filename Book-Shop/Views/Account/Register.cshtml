@@ -2,54 +2,99 @@
 
 @{
     ViewData["Title"] = "Register";
+    Layout = "_Blank";
 }
 
-<h1>Register</h1>
-
-<h4>RegisterDTO</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card row col-4 mx-auto">
+    <div class="card-header">
+        <h1>Sign Up </h1>
+    </div>
+    <div class="card-body">
+        <form role="form" class="needs-validation" asp-controller="Account" asp-action="Register" novalidate>
+            @if (TempData["error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show Register " role="alert">
+                    <strong>@TempData["error"]</strong>
+                </div>
+            }
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <label for="validationCustom02" class="form-label">FirstName</label>
+                <input asp-for="FirstName" class="form-control" id="validationCustom02" required placeholder="FirstName">
                 <span asp-validation-for="FirstName" class="text-danger"></span>
+                <div class="valid-feedback">
+                    Submit Sucessfully!
+                </div>
+                <div class="invalid-feedback">
+                    Please Enter Valid Value!!
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <label for="validationCustom02" class="form-label">LastName</label>
+                <input asp-for="LastName" class="form-control" id="validationCustom02" required placeholder="LastName">
                 <span asp-validation-for="LastName" class="text-danger"></span>
+                <div class="valid-feedback">
+                    Submit Sucessfully!
+                </div>
+                <div class="invalid-feedback">
+                    Please Enter Valid Value!!
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input type="date" asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                <label for="validationCustomUsername" class="form-label">Email Address</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-envelope-at-fill"></i></span>
+                    <input asp-for="Email" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="valid-feedback">
+                        Submit Sucessfully!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please Enter Valid Email!!
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+
+                  <div class="form-group">
+                <label for="validationCustom02" class="form-label">Password</label>
+                <input asp-for="Password" class="form-control" id="validationCustom02" required placeholder="Password">
                 <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfrimPassword" class="control-label"></label>
-                <input asp-for="ConfrimPassword" class="form-control" />
+                <div class="valid-feedback">
+                    Submit Sucessfully!
+                </div>
+                <div class="invalid-feedback">
+                    Please Enter Valid password!!
+                </div>
+            </div
+             <div class="form-group">
+                <label for="validationCustom02" class="form-label">Password</label>
+                <input asp-for="ConfrimPassword" class="form-control" id="validationCustom02" required placeholder="Password">
                 <span asp-validation-for="ConfrimPassword" class="text-danger"></span>
+                <div class="valid-feedback">
+                    Submit Sucessfully!
+                </div>
+                <div class="invalid-feedback">
+                    Please Enter Valid password!!
+                </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label for="validationCustom02" class="form-label">DateOfBrith</label>
+                <input asp-for="DateOfBirth" class="form-control" id="validationCustom02" required placeholder="Password">
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                <div class="valid-feedback">
+                    Submit Sucessfully!
+                </div>
+                <div class="invalid-feedback">
+                    Please Enter Valid BrithDate !!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit"> <i class="bi bi-check2-circle"></i> SIGN UP</button>
             </div>
         </form>
     </div>
 </div>
+@section Scripts {
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+    <script src="~/js/Register-Login.js"></script>
+}
