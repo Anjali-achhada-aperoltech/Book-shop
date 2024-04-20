@@ -19,33 +19,30 @@ namespace Book.Services
     {
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserManager<Applicationuser> userManager;
-        public CartService(IUnitOfWork unitOfWork,IHttpContextAccessor httpContextAccessor,UserManager<Applicationuser> userManager) : base(unitOfWork)
+        public CartService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, UserManager<Applicationuser> userManager) : base(unitOfWork)
         {
             this.httpContextAccessor = httpContextAccessor;
             this.userManager = userManager;
         }
-
-        public async Task<bool> DecreMentItem( int quantity, Guid id)
+        public async Task<bool> DecreMentItem(int quantity, Guid id)
         {
-            var data=await unitOfWork.cartReposititory.FindSingleByAsync(x=>x.Id==id);
+            var data = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
             if (data == null)
             {
                 return false;
             }
-            //if (data.quantity >= 1)
-            //{
-            //    await unitOfWork.cartReposititory.DeleteAsync(data);
-            //}
-            //else
-            //{
-                data.quantity-= quantity;
-            await unitOfWork.cartReposititory.UpdateAsync(data);
-                 return true;
-            //}
-            return true;
+            if (data.quantity > 0)
+            {
+                data.quantity -= quantity;
+                if (data.quantity < 0) data.quantity = 0; // Prevents the quantity from going negative
+                await unitOfWork.cartReposititory.UpdateAsync(data);
+                return true;
+            }
+            return false;
+
+
 
         }
-
         public async Task<bool> DeleteAsync(Guid id)
         {
             var data = await unitOfWork.cartReposititory.GetAsync(id);
@@ -61,36 +58,38 @@ namespace Book.Services
                 return false;
             }
         }
-
         public async Task<CartVm> GetallAsync()
         {
             var user = httpContextAccessor.HttpContext.User;
             var data = userManager.GetUserId(user);
-            CartVm v1 = new CartVm() {
-            Carts = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data && !x.IsDeleted, includeProperties: "BookItem")
-        };
-            foreach(var item in v1.Carts)
+            CartVm v1 = new CartVm()
             {
-                v1.Total +=(double)(item.BookItem.price * item.quantity);
+                Carts = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data && !x.IsDeleted, includeProperties: "BookItem")
+            };
+            foreach (var item in v1.Carts)
+            {
+                v1.Total += (double)(item.BookItem.price * item.quantity);
             }
             return v1;
-        
+
         }
 
-        public  async Task<bool> IncrementCartItem( Guid id)
-        {
-           
-                var cartItem = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
-                if (cartItem == null)
-                {
-                    return false;
-                }
+       
 
-                cartItem.quantity += 1;
-               await unitOfWork.cartReposititory.UpdateAsync(cartItem);
-                return true;
+    
+
+        public async Task<bool> IncrementCartItem(Guid id)
+        {
+            var cartItem = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
+            if (cartItem == null)
+            {
+                return false;
             }
-        
+
+            cartItem.quantity += 1;
+            await unitOfWork.cartReposititory.UpdateAsync(cartItem);
+            return true;
+        }
 
         public async Task<CartDto> InsertAsync(CartDto cart, Guid Id)
         {
@@ -100,26 +99,22 @@ namespace Book.Services
                 cart.BookitemId = Id;
                 var user = httpContextAccessor.HttpContext.User;
                 var data = userManager.GetUserId(user);
-
-                var relatedData =await  unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data);
-
+                var relatedData = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data);
                 if (string.IsNullOrEmpty(data))
                     throw new InvalidOperationException("User is not authenticated");
                 var userExists = await userManager.FindByIdAsync(data);
                 if (userExists == null)
                     throw new InvalidOperationException("User does not exist");
                 var existingCart = await unitOfWork.cartReposititory.FindSingleByAsync(
-    c => c.ApplicationuserId == data && c.BookitemId == cart.BookitemId);
+                   c => c.ApplicationuserId == data && c.BookitemId == cart.BookitemId);
 
                 if (existingCart != null)
                 {
                     existingCart.quantity += cart.quantity;
                     //cart.quantity = IncreMenttItem(cart, cart.quantity);
-
                 }
                 else
                 {
-
                     Cart newCart = new Cart
                     {
                         ApplicationuserId = data,
@@ -137,8 +132,20 @@ namespace Book.Services
                 throw;
             }
         }
+        //public async Task<int>GetQuantity(Guid userid )
+        //{
+        //    var user = httpContextAccessor.HttpContext.User;
+        //    var data = userManager.GetUserId(user);
+        //    var listitems = await unitOfWork.cartReposititory.GetAllAsync();
+        //    await unitOfWork.cartReposititory.FindSingleByAsync
+        //               (ci => ci.ApplicationuserId == data) listitems.Sum(c => c.quantity);
 
-      
-    }
+        //    return int;
+
+           
+
+        }
+
+
     }
 

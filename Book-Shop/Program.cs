@@ -6,8 +6,10 @@ using Book.Interfaces.Services;
 using Book.Reposittiory;
 using Book.Services;
 using Book.UOW;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Stripe;
 using System.Configuration;
 
@@ -26,6 +28,7 @@ builder.Services.AddScoped<ICartService,CartService>();
 builder.Services.AddScoped<IOrderHeaderService, OrderHeaderService>();
 builder.Services.AddScoped<IOrderHeaderRepositiory, OrderHeaderRepositiory>();
 builder.Services.AddScoped<IOrderDetailRepositiory, OrderDetailRepositiory>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("PayementSettings:SecretKey"));
 builder.Services.AddIdentity<Applicationuser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddDbContext<Book.Domain.Context.ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -36,6 +39,7 @@ builder.Services.ConfigureApplicationCookie(option =>
     option.LogoutPath = "/Account/Logout";
     option.ExpireTimeSpan = TimeSpan.FromMinutes(1);
     option.SlidingExpiration = true;
+    option.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter; 
 });
 
 var app = builder.Build();
@@ -53,8 +57,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("PaymentSettings:SecretKey").Get<string>();
+
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(

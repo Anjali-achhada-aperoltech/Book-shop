@@ -1,23 +1,43 @@
 ﻿
-@model Book.Business.DTO.CartVm;
-<form action="summery" method="post">
+@inject IOptions<Book.Business.DTO.StripeSettings> Stripe
+@model Book.Business.DTO.CartVm
+@inject SignInManager<Applicationuser> signInManager
+@inject UserManager<Applicationuser> userManager
+
+@using Book.Domain.Models
+@using Microsoft.AspNetCore.Identity
+ @using Microsoft.Extensions.Options
+<div class="page-heading about-heading header-text">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-content">
+                    <h4>Cart Page</h4>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* <partial name="success" /> 
+ <form action="summery" method="post">
     <div class="form-group">
-        <label for="exampleInputEmail1">Phone</label>
+        <label>Phone</label>
         <input type="number" asp-for="@Model.phone" placeholder="Enter Phone Number">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">City</label>
+        <label>City</label>
         <input type="city" asp-for="City" class="form-control"  placeholder="City">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">State</label>
         <input type="state" asp-for="state" class="form-control" placeholder="state">
     </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Address</label>
+    <div class="form-group"> *@
+@*         <label for="exampleInputPassword1">Address</label>
         <input asp-for="Address" class="form-control" placeholder="Address">
-    </div>
+    </div> *@
      @* @foreach(var item in Model.Carts)
     {
         <span>@item.BookItem.Name</span>
@@ -25,5 +45,72 @@
         <span>@(item.BookItem.price)*(@item.quantity)</span>
     }  *@
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+@*      <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+ 
+ *@
+<!-- Checkout-->
+ <div class="container pb-6">
+    <div class="row">
+        <div class="col-lg-7 pe-xl-6">
+            <form action="summery" method="post">
+                <h3 class="text-primary mb-5 mt-5">Address </h3>
+                <hr/>
+                <div class="row">
+                    
+                    <div class="mb-3 col-md-6 mb-4">
+                        <label class="form-label" for="street_invoice">Address</label>
+                        <input class="form-control form-control-underlined ps-0" type="text" asp-for="@Model.Address">
+                    </div>
+                    <div class="mb-3 col-md-6 mb-4">
+                        <label class="form-label" for="city_invoice">City</label>
+                        <input class="form-control form-control-underlined ps-0" type="text" asp-for="@Model.City">
+                    </div>
+                    
+                    <div class="mb-3 col-md-6 mb-4">
+                        <label class="form-label" for="state_invoice">State</label>
+                        <input class="form-control form-control-underlined ps-0" type="text"  asp-for="@Model.state">
+                    </div>
+                    <div class="mb-3 col-md-6 mb-4">
+                        <label class="form-label" for="phonenumber_invoice">Phone Number</label>
+                        <input class="form-control form-control-underlined ps-0" type="number"  asp-for="@Model.phone">
+                     </div>
+                    <div class="mb-3 col-12 mt-3">
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-dark btn-lg mb-5" >Place order</button>
+                            <!-- this should be <button type="submit"> on your site-->
+                        </div>
+                    </div> 
+                    <!-- /Invoice Address-->
+                 </div>
+                <!-- Shippping Address-->
+               
+                <!-- /Shipping Address                            -->
+            </form> 
+        </div>
+           @*  <div class="col-lg-5">
+            <h5 class="text-primary mb-5">Order Summary</h5>
+            <table class="table border-bottom border-dark mb-5">
+                @foreach (var item in Model.Carts)
+                {
+                    <tr class="text-sm">
+                        <th class="py-4 fw-normal text-muted">@item.BookItem.Name <span>x @item.quantity</span></th>
+                        <td class="py-4 text-end text-muted">$@item.BookItem.price</td>
+                    </tr>
+                  
+                    <tr>
+                        <th class="py-4 text-uppercase fw-normal text-sm align-bottom">Order Subtotal </th>
+                        <td class="py-4 text-end text-muted">@(item.BookItem.price)*(@item.quantity)</td>
+                    </tr>
+                   
+                    <tr>
+                        <th class="py-4 text-uppercase fw-normal border-dark align-bottom">Total</th>
+                        <td class="py-4 text-end h3 fw-normal border-dark">$400.00</td>
+                    </tr>
+                }
+            </table> *@
+           
+        </div>
+    </div>
+</div>

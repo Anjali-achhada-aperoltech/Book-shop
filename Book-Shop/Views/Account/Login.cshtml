@@ -3,39 +3,61 @@
 
 @{
     ViewData["Title"] = "Login";
+    Layout="_Blank";
 }
-
-<h1>Login</h1>
-
-<h4>LoginDto</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+<div class="card row col-4 mx-auto">
+<div class="card-header">
+    <h1>Sign In</h1>
+</div>
+<div class="card-body">
+    <form role="form" class="needs-validation" asp-controller="Account" asp-action="Login" novalidate>
+        @if (TempData["success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show Register " id="successMessage" role="alert">
+                <strong>@TempData["success"]</strong>
+            </div>
+        }
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show Register " id="successMessage" role="alert">
+                <strong>@TempData["error"]</strong>
+            </div>
+        }
+        <div class="form-group">
+            <label for="validationCustomUsername" class="form-label">Email</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-envelope-at-fill"></i></span>
+                <input asp-for="Email" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required placeholder="UserName">
                 <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="valid-feedback">
+                    Submit Sucessfully!
+                </div>
+                <div class="invalid-feedback">
+                    Please Enter Valid UserName!!
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="validationCustom02" class="form-label">Password</label>
+            <input asp-for="Password" class="form-control" id="validationCustom02" required placeholder="Password">
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="valid-feedback">
+                Submit Sucessfully!
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
-                </label>
+            <div class="invalid-feedback">
+                Please Enter Valid password!!
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit"><i class="bi bi-person-circle"></i> SIGN IN</button>
+        </div>
+        <div class="form-group">
+            <a asp-action="Register" asp-controller="Account">Don't have an account? Register</a>
+        </div>
+    </form>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
+@section Scripts {
 
+    <script src="~/js/Register-Login.js"></script>
+}

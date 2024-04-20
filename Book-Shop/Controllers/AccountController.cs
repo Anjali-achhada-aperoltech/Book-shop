@@ -1,8 +1,10 @@
 ﻿using Book.Business.DTO;
 using Book.Domain.Models;
+using Book.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text.Encodings.Web;
 
 namespace Book_Shop.Controllers
 {
@@ -10,10 +12,17 @@ namespace Book_Shop.Controllers
     {
         private readonly UserManager<Applicationuser> _userManager;
         private readonly SignInManager<Applicationuser> _signInManager;
-        public AccountController(UserManager<Applicationuser> userManager,SignInManager<Applicationuser> signInManager)
+        private readonly IEmailSender emailSender;
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IConfiguration configuration;
+      
+        public AccountController(UserManager<Applicationuser> userManager,SignInManager<Applicationuser> signInManager,IEmailSender emailSender,IWebHostEnvironment webHostEnvironment,IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this.emailSender = emailSender;
+            this.webHostEnvironment = webHostEnvironment;
+            this.configuration = configuration;
 
         }
         public IActionResult Index()
@@ -26,8 +35,10 @@ namespace Book_Shop.Controllers
             return View();
         }
         [HttpPost]
+
         public async Task<IActionResult> Register(RegisterDTO v1)
         {
+            
             try
             {
                 if (ModelState.IsValid)
@@ -50,9 +61,13 @@ namespace Book_Shop.Controllers
                     var result = await _userManager.CreateAsync(users, v1.Password);
                     if (result.Succeeded)
                     {
+                        bool status=await emailSender.EmailSenderAsync(v1.Email, "Account Created",await  GetEmailBody(v1.Email));
+                         await _signInManager.SignInAsync(users,isPersistent: false);
+                        return RedirectToAction("Login", "Account");
+                        
 
-                        await _signInManager.SignInAsync(users,isPersistent: false);
-                        return RedirectToAction("Index", "Home");
+
+
                     }
                     if (result.Errors.Count() > 0)
                     {
@@ -70,12 +85,15 @@ namespace Book_Shop.Controllers
             return View(v1);
         }
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
+           
             return View();
         }
-        public async Task<IActionResult> Login(LoginDto vm)
+        public async Task<IActionResult> Login(LoginDto vm, string returnUrl = null)
         {
+           
             try
             {
                 Applicationuser checkemail = await _userManager.FindByEmailAsync(vm.Email);
@@ -92,10 +110,14 @@ namespace Book_Shop.Controllers
                     :false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    // Redirects to the return URL if it's locally valid; otherwise, redirects to a default page
+                    return LocalRedirect(returnUrl ?? "/");
                 }
-               
-               ModelState.AddModelError(string.Empty,"Email and password is wrong");
+                else
+                {
+                    return RedirectToAction("Home", "Index");
+                }
+                ModelState.AddModelError(string.Empty,"Email and password is wrong");
             
             }
             catch(Exception ex)
@@ -103,6 +125,23 @@ namespace Book_Shop.Controllers
                 throw;
             }
             return View();
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
+        public async Task<string>GetEmailBody(string email)
+        {
+            string url = configuration.GetValue<string>("urls:LoginUrl");
+            string path = Path.Combine(webHostEnvironment.WebRootPath, "Template\\Welcome.cshtml");
+            string htmlstring=System.IO.File.ReadAllText(path);
+            htmlstring = htmlstring.Replace("{{title}}","User Registration");
+            htmlstring = htmlstring.Replace("{{username}}",email);
+
+            htmlstring = htmlstring.Replace("{{url}}", "https://localhost:7071/account/login");
+            return htmlstring;
+
         }
     }
 
