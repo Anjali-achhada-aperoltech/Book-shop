@@ -27,8 +27,8 @@ namespace Book.Business.DTO
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-       public string ConfrimPassword {  get; set; }
+        [DataType(DataType.Password)]
+        public string ConfrimPassword {  get; set; }
 
     }
 }

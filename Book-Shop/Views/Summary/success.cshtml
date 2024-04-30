@@ -1,4 +1,4 @@
-﻿@inject IOptions<Book.Business.DTO.StripeSettings> Stripe
+﻿@* @inject IOptions<Book.Business.DTO.StripeSettings> Stripe
 
  @using Microsoft.Extensions.Options
 @model int
@@ -9,4 +9,15 @@
 
 <h1>
     Your order is success @Model
-</h1>
+</h1> *@
+@model Book.Business.DTO.CartVm
+<h1>Order Success</h1>
+@if (Model != null)
+{
+    <h2>Your order with ID: @Model.Id has been successfully placed!</h2>
+    <p>Thank you for your order. Your payment status is @Model.OrderHeader.PaymentStatus</p>
+}
+else
+{
+    <p>There was a problem displaying your order details.</p>
+}

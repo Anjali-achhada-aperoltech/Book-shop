@@ -19,11 +19,9 @@ namespace Book_Shop.Controllers
             _service = service;
 
         }
-
-
-        public async Task<IActionResult> Index(string Searchitems)
+        public async Task<IActionResult> Index(string Searchitems, int limit = 6)
         {
-            var result =await  _service.GetAllAsync();
+            var result = await _service.GetAllAsync();
             if (result == null)
             {
                 return NotFound();
@@ -39,8 +37,11 @@ namespace Book_Shop.Controllers
 
 
             return View(result);
-           
+
         }
+
+
+       
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {

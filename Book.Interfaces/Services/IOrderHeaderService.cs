@@ -15,6 +15,6 @@ namespace Book.Interfaces.Services
         Task<OrderHeader> payementvalue(Guid id, CartVm model, string sessionId, string PaymentId);
         Task<OrderHeader> orderstatus(Guid id, string OrderStatus, string? PayementStatus = null);
         Task<object> ordersuccess(Guid id);
-       // Task<object> val(CartVm model);
+        Task<CartVm> GetallAsync();
     }
 }

@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Book.Domain.Migrations.BookDb
+namespace Book.Domain.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20240417063435_add-table")]
+    [Migration("20240421113917_add-table")]
     partial class addtable
     {
         /// <inheritdoc />

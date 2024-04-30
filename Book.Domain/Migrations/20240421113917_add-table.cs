@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Book.Domain.Migrations.BookDb
+namespace Book.Domain.Migrations
 {
     /// <inheritdoc />
     public partial class addtable : Migration

@@ -110,14 +110,29 @@ namespace Book_Shop.Controllers
                     :false);
                 if (result.Succeeded)
                 {
-                    // Redirects to the return URL if it's locally valid; otherwise, redirects to a default page
-                    return LocalRedirect(returnUrl ?? "/");
+                    // Check if the user is in the Admin role
+                    var isAdmin = await _userManager.IsInRoleAsync(checkemail, "Admin");
+                    if (isAdmin)
+                    {
+                        // Redirect admin users to an admin-specific page
+                        return LocalRedirect(returnUrl ?? "/Admin/Home/Index");
+                    }
+                    else
+                    {
+                        // Redirect normal users to the homepage or a user-specific page
+                        //return RedirectToAction("Index", "Home");
+                        return LocalRedirect(Url.IsLocalUrl(returnUrl) ? returnUrl : "/");
+                    }
                 }
-                else
-                {
-                    return RedirectToAction("Home", "Index");
-                }
-                ModelState.AddModelError(string.Empty,"Email and password is wrong");
+                //if (result.Succeeded)
+                //{
+                //    // Redirects to the return URL if it's locally valid; otherwise, redirects to a default page
+                //    return LocalRedirect(returnUrl ?? "/");
+                //}
+                //else
+                //{
+                //}
+                //ModelState.AddModelError(string.Empty,"Email and password is wrong");
             
             }
             catch(Exception ex)

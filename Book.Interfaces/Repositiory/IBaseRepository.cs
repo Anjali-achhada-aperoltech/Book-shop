@@ -28,5 +28,6 @@ namespace ROMS.Interfaces.Repositories
         Task<T> FindSingleByAsync(Expression<Func<T, bool>> predicate, string includeProperties = "");
 
         Task<int> SaveAsync();
+        Task<bool> RemoveRange(IEnumerable<T> entities);
     }
 }

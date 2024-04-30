@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Book.Domain.Migrations
+namespace Book.Domain.Migrations.ApplicationDb
 {
     /// <inheritdoc />
-    public partial class addidentity : Migration
+    public partial class addidentitytable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -24,22 +24,33 @@ namespace Book.Services
             this.httpContextAccessor = httpContextAccessor;
             this.userManager = userManager;
         }
-        public async Task<bool> DecreMentItem(int quantity, Guid id)
+        public async Task<bool> DecreMentItem( Guid id)
         {
-            var data = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
-            if (data == null)
+            //var data = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
+            //if (data == null)
+            //{
+            //    return false;
+            //}
+            //if (data.quantity > 0)
+            //{
+            //    data.quantity -= quantity;
+            //    if (data.quantity < 0) data.quantity = 0; // Prevents the quantity from going negative
+            //    await unitOfWork.cartReposititory.UpdateAsync(data);
+            //    return true;
+            //}
+            //return false;
+            var cartItem = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
+            if (cartItem == null)
             {
                 return false;
             }
-            if (data.quantity > 0)
+            if (cartItem.quantity > 0)
             {
-                data.quantity -= quantity;
-                if (data.quantity < 0) data.quantity = 0; // Prevents the quantity from going negative
-                await unitOfWork.cartReposititory.UpdateAsync(data);
+                cartItem.quantity -= 1;
+                await unitOfWork.cartReposititory.UpdateAsync(cartItem);
                 return true;
             }
             return false;
-
 
 
         }
@@ -106,7 +117,7 @@ namespace Book.Services
                 if (userExists == null)
                     throw new InvalidOperationException("User does not exist");
                 var existingCart = await unitOfWork.cartReposititory.FindSingleByAsync(
-                   c => c.ApplicationuserId == data && c.BookitemId == cart.BookitemId);
+                   c => c.ApplicationuserId == data && c.BookitemId == cart.BookitemId && !c.IsDeleted);
 
                 if (existingCart != null)
                 {
@@ -132,20 +143,24 @@ namespace Book.Services
                 throw;
             }
         }
-        //public async Task<int>GetQuantity(Guid userid )
-        //{
-        //    var user = httpContextAccessor.HttpContext.User;
-        //    var data = userManager.GetUserId(user);
-        //    var listitems = await unitOfWork.cartReposititory.GetAllAsync();
-        //    await unitOfWork.cartReposititory.FindSingleByAsync
-        //               (ci => ci.ApplicationuserId == data) listitems.Sum(c => c.quantity);
+        public async Task<int> GetQuantity(Guid userid)
+        {
+            var user = httpContextAccessor.HttpContext.User;
+            var data = userManager.GetUserId(user);
+            var cartItems = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data);
+            var totalQuantity = cartItems.Sum(c => c.quantity);
 
-        //    return int;
+            return (int)totalQuantity;
 
-           
 
         }
-
-
     }
+
+
+}
+        
+        
+
+
+    
 

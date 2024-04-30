@@ -2,6 +2,32 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="row">
+<div class="col-md-4">
+<div class="card" style="width: 18rem; background-color:aqua">
+    <div class="card-body">
+        <h5 class="card-title">Categories</h5>
+        <p class="card-text text-center">@await Component.InvokeAsync("CountCity").</p>
 
-<h1>Index</h1>
+    </div>
+</div>
+</div>
+        <div class="col-md-4">
+        <div class="card" style="width: 18rem; background-color:aqua">
+            <div class="card-body">
+                <h5 class="card-title">Book Items</h5>
+                <p class="card-text text-center">@await Component.InvokeAsync("CountProduct").</p>
 
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem; background-color:aqua">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text text-center">@await Component.InvokeAsync("CountUser").</p>
+
+                </div>
+            </div>
+</div>
+</div>

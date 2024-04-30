@@ -13,8 +13,11 @@ namespace Book.Interfaces.Services
         Task<CartVm> GetallAsync();
         Task<bool> DeleteAsync(Guid id);
         Task<bool> IncrementCartItem(Guid id);
-        Task<bool>DecreMentItem( int quantity, Guid id);
-        
+        Task<bool>DecreMentItem( Guid id);
+        Task<int> GetQuantity(Guid userid);
+
+
+
 
     }
 }
