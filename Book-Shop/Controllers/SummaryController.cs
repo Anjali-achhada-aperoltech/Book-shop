@@ -13,6 +13,7 @@ namespace Book_Shop.Controllers
     {
         private readonly IOrderHeaderService _service;
         private readonly ICartService cartService;
+       
         
         public SummaryController(IOrderHeaderService service, ICartService cartService) { 
             _service = service;
@@ -38,7 +39,6 @@ namespace Book_Shop.Controllers
         {
             try
             {
-               
                 // Assuming _service.SummeryPage initializes the Cart and returns a filled model with OrderHeader etc.
                 var cartDto = await _service.SummeryPage(model);
                 if (cartDto == null)
@@ -127,8 +127,11 @@ namespace Book_Shop.Controllers
                 return NotFound();
             }
 
-            return View(id);
+            return View(data);
         }
+        
+
+        
 
     }
 

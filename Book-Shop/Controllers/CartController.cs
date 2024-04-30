@@ -54,10 +54,15 @@ namespace Book_Shop.Controllers
             var data=await cartService.IncrementCartItem(id);
             return RedirectToAction("Index","cart");
         }
-        public async Task<IActionResult>minus(int quantity,Guid id)
+        public async Task<IActionResult>minus(Guid id)
         {
-            var data = await cartService.DecreMentItem(quantity,id);
-            return RedirectToAction("Index");
+            var data = await cartService.DecreMentItem(id);
+            return RedirectToAction("Index","cart");
+        }
+        public async Task<IActionResult>GetData(Guid userId)
+        {
+            var data = cartService.GetQuantity(userId);
+            return Ok(data);
         }
 
     }

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Book.Business.DTO.CreateBookDTO>
+@{
+
+    ViewData["Title"] = "Home Page";
+   
+
+}
+
+<div class="latest-products">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <h2>Latest BookItems</h2>
+                    <a asp-action="Index" asp-controller="Home">view all products <i class="fa fa-angle-right"></i></a>
+                </div>
+            </div>
+
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="product-item">
+                        <a href="#"><img src="~/@item.FrontImage" height="180px" width="300px" alt=""></a>
+                        <div class="down-content">
+                            <a href="#"><h4>@item.Name</h4></a>
+                            <h6><i class="fa-solid fa-indian-rupee-sign"></i>  @item.price</h6>
+
+                            <ul class="stars">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                            </ul>
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary m-2" asp-route-id="@item.Id">Details</a>
+                            <a asp-action="AddCart" asp-controller="Cart" class="btn btn-primary" asp-route-id="@item.Id"><i class="fa-solid fa-cart-shopping"></i>Add To Cart</a>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+
+
+        </div>
+      
+
+
+

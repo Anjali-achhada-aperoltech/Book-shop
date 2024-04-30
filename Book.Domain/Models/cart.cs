@@ -15,6 +15,8 @@ namespace Book.Domain.Models
         public Guid? BookitemId { get; set; }
         [JsonIgnore]
         public BookItems  BookItem { get; set; }
+        
+     
         public string? ApplicationuserId { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;

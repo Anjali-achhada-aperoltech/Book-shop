@@ -118,6 +118,20 @@ namespace ROMS.Repositories
             }
             return true;
         }
+        public async Task<bool> RemoveRange(IEnumerable<T> entities)
+        {
+            Context.Set<T>().RemoveRange(entities);
+            try
+            {
+                await Context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here; for example, using ILogger
+                return false;
+            }
+        }
 
         public async Task<int> SaveAsync()
         {

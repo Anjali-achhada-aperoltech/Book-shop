@@ -57,15 +57,14 @@ namespace Book.Services
         public async Task<List<CreateBookDTO>> GetAllAsync()
         {
            List<CreateBookDTO> list = new List<CreateBookDTO>();
-            var data = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted,includeProperties:"Category");
+            var data = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted, includeProperties: "Category");
             foreach(var item in data)
             {
                 list.Add(new CreateBookDTO { Id=item.Id, Name=item.Name, Description=item.Description,AuthorName=item.AuthorName,price=item.price,FrontImage=item.FrontImage,CategoryName=item.Category.Name});
             }
             return list;
         }
-
-        public async Task<CreateBookDTO> GetAsync(Guid id)
+            public async Task<CreateBookDTO> GetAsync(Guid id)
         {
             var data = await unitOfWork.bookItemsRepositiory.GetAsync(id,includeProperties:"Category");
             CreateBookDTO vm = new CreateBookDTO();
@@ -78,6 +77,7 @@ namespace Book.Services
             return vm;
             
         }
+       
 
         public async Task<BookItemsDTO> GetItemsAsync(Guid id)
         {

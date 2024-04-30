@@ -1,5 +1,6 @@
 ﻿using Book.Business.DTO;
 using Book.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Book_Shop.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class BookItemController : Controller
     {
         private readonly IBookItemService _service;

@@ -1,11 +1,14 @@
 ﻿using Book.Business.DTO;
 using Book.Interfaces.Services;
 using Book_Shop.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Book_Shop.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class CategoryController : Controller
     {
         private readonly ICategoryService service;
