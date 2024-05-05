@@ -159,7 +159,7 @@ namespace Book_Shop.Areas.Admin.Controllers
             var data = await _service.DeleteAsync(id);
             if (data == true)
             {
-                TempData["delete"] = "Delete Data Successfully";
+                TempData["delete"] = "Delete Data Sucessfully";
                 return RedirectToAction("Index");
             }
             return View(data);
