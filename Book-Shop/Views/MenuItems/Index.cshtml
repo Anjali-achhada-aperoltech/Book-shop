@@ -1,3 +1,96 @@
-﻿@model IEnumerable<ROMS.Bussiness.DTOs.ViewCategories>@{    ViewData["Title"] = "Index";}<style>    .image-container img {        width: 100px;        height: 100px;        object-fit: cover;        border: 1px solid black;        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);        border-radius: 10px;    }    }</style><h2 id="val" style="display:none">@ViewBag.id</h2><ul class="treeview" style="list-style:none;">    @foreach (var item in Model)
-    {        <li style="list-style:none;">            <h2 onclick="toggleDisplay('@item.categoryname')">@item.categoryname</h2>            <ul id="@item.categoryname" class="sub-menu category hidden" style="display:block;">                @foreach (var item2 in item.subcategories)
-                {                    <li style="list-style:none;">                        <h4 onclick="toggleSubcategory('@item2.SubCategoryName')">@item2.SubCategoryName</h4>                        <ul id="subcategory_@item2.SubCategoryName" class="sub-menu subcategory hidden" style="display:block;">                            @foreach (var item3 in item2.menuitems)                            {                                <li style="list-style:none;">                                    <div class="row-cols-4">                                        <div class="item col align-items-center">                                            <div class="col-12 col-md-2 text-center mb-3 mb-md-0 data22 image-container">                                                <img src="~/@item3.Image" class="img-fluid" id="preview">                                                <span class="d-inline d-md-block  no-wrap" id="name-@item3.Id">@item3.name</span>                                            </div>                                            <div class="col-12 col-md-2 text-center">                                                <div class="price-container">                                                    <i class="bi bi-currency-rupee"></i>                                                    <span class="data" id="price-@item3.Id" data-price="@item3.price">@item3.price</span>                                                </div>                                            </div>                                            <div class="col-12 col-md-2 text-center">                                                <div class="counter-container">                                                    <button onclick="decrement('@item3.Id','price-@item3.Id')" class="btn btn-sm btn-dark" style="border-radius: 50px;">-</button>                                                    <span class="quantity" id="counter-@item3.Id" data-price="@item3.price">0</span>                                                    <button onclick="increment('@item3.Id','price-@item3.Id')" class="btn btn-sm btn-dark" style="border-radius: 50px;">+</button>                                                </div>                                            </div>                                        </div>                                    </div>                                </li>                            }                        </ul>                    </li>                }            </ul>        </li>    }</ul><div class="row-md-6 mr-3 text-md-right">    <a asp-controller="CartPage" onclick="addToCart()" asp-action="Index" style="font-size:x-large; border-radius:50px;" class="btn btn-lg btn-dark tt "><i class="bi bi-arrow-right-circle"></i> Next</a></div></div>@section Scripts {    <script src="~/Client/js/menuitem.js">        var idValue = document.getElementById('val').innerText;        console.log(idValue);    </script>}
+﻿@model IEnumerable<ROMS.Bussiness.DTOs.ViewCategories>
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    .image-container img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border: 1px solid black;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    }
+</style>
+
+<h2 id="val" style="display:none">@ViewBag.id</h2>
+
+<ul class="treeview" style="list-style:none;">
+    @foreach (var item in Model)
+    {
+        <li>
+            <h2>@item.categoryname</h2>
+            <ul id="@item.categoryname">
+
+                @foreach (var item2 in item.subcategories)
+                {
+
+                    <li >
+                        <h4 >@item2.SubCategoryName</h4>
+                        <ul id="subcategory_@item2.SubCategoryName">
+
+
+
+                            @foreach (var item3 in item2.menuitems)
+                            {
+
+                                <li>
+                                    <div class="row-cols-4">
+                                        <div class="item col align-items-center">
+                                            <div class="col-12 col-md-2 text-center mb-3 mb-md-0 data22 image-container">
+                                                <img src="~/@item3.Image" class="img-fluid" id="preview">
+                                                <span class="d-inline d-md-block  no-wrap" id="name-@item3.Id">@item3.name</span>
+                                            </div>
+
+                                            <div class="col-12 col-md-2 text-center">
+                                                <div class="price-container">
+                                                    <i class="bi bi-currency-rupee"></i>
+                                                    <span class="data" id="price-@item3.Id" data-price="@item3.price">@item3.price</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-2 text-center">
+                                                <div class="counter-container">
+                                                    <button onclick="decrement('@item3.Id','price-@item3.Id')" class="btn btn-sm btn-dark" style="border-radius: 50px;">-</button>
+                                                    <span class="quantity" id="counter-@item3.Id" data-price="@item3.price">0</span>
+                                                    <button onclick="increment('@item3.Id','price-@item3.Id')" class="btn btn-sm btn-dark" style="border-radius: 50px;">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+</ul>
+
+
+
+
+<div class="row-md-6 mr-3 text-md-right">
+
+    <a asp-controller="CartPage" onclick="addToCart()" asp-action="Index" style="font-size:x-large; border-radius:50px;" class="btn btn-lg btn-dark tt "><i class="bi bi-arrow-right-circle"></i> Next</a>
+</div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/Client/js/menuitem.js">
+        var idValue = document.getElementById('val').innerText;
+        console.log(idValue);
+
+    </script>
+}
+
+
+
+
+
