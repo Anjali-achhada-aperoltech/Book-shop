@@ -14,31 +14,34 @@ using System.Threading.Tasks;
 
 namespace Book.Services
 {
-    public class BookItemsService : ServiceBase,IBookItemService
+    public class BookItemsService : ServiceBase, IBookItemService
     {
         private readonly UserManager<Applicationuser> _userManager;
-        public BookItemsService(IUnitOfWork unitOfWork,UserManager<Applicationuser> userManager) : base(unitOfWork)
+        public BookItemsService(IUnitOfWork unitOfWork, UserManager<Applicationuser> userManager) : base(unitOfWork)
         {
             _userManager = userManager;
         }
 
         public async Task<BookItemsDTO> AddAsync(BookItemsDTO model)
         {
-            model.Id=Guid.NewGuid();
+            var existingnameexist = await unitOfWork.bookItemsRepositiory.FindByAsync(x => x.Name == model.Name);
+            if (existingnameexist != null)
+            {
+                return null;
+            }
+            model.Id = Guid.NewGuid();
             BookItems b1 = new BookItems();
             b1.Name = model.Name;
             b1.Description = model.Description;
-            b1.AuthorName= model.AuthorName;
+            b1.AuthorName = model.AuthorName;
             b1.price = model.price;
             b1.CategoryId = model.CategoryId;
-            b1.FrontImage= model.FrontImage;
+            b1.FrontImage = model.FrontImage;
             var data = await unitOfWork.bookItemsRepositiory.AddAsync(b1);
             return model;
 
         }
-       
-
-        public  async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var data = await unitOfWork.bookItemsRepositiory.GetAsync(id);
             if (data != null && id != null)
@@ -56,29 +59,27 @@ namespace Book.Services
 
         public async Task<List<CreateBookDTO>> GetAllAsync()
         {
-           List<CreateBookDTO> list = new List<CreateBookDTO>();
+            List<CreateBookDTO> list = new List<CreateBookDTO>();
             var data = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted, includeProperties: "Category");
-            foreach(var item in data)
+            foreach (var item in data)
             {
-                list.Add(new CreateBookDTO { Id=item.Id, Name=item.Name, Description=item.Description,AuthorName=item.AuthorName,price=item.price,FrontImage=item.FrontImage,CategoryName=item.Category.Name});
+                list.Add(new CreateBookDTO { Id = item.Id, Name = item.Name, Description = item.Description, AuthorName = item.AuthorName, price = item.price, FrontImage = item.FrontImage, CategoryName = item.Category.Name });
             }
             return list;
         }
-            public async Task<CreateBookDTO> GetAsync(Guid id)
+        public async Task<CreateBookDTO> GetAsync(Guid id)
         {
-            var data = await unitOfWork.bookItemsRepositiory.GetAsync(id,includeProperties:"Category");
+            var data = await unitOfWork.bookItemsRepositiory.GetAsync(id, includeProperties: "Category");
             CreateBookDTO vm = new CreateBookDTO();
-            vm.Name= data.Name;
-            vm.Description= data.Description;
+            vm.Name = data.Name;
+            vm.Description = data.Description;
             vm.price = data.price;
-            vm.FrontImage= data.FrontImage;
+            vm.FrontImage = data.FrontImage;
             vm.AuthorName = data.AuthorName;
             vm.CategoryName = data.Category.Name;
             return vm;
-            
-        }
-       
 
+        }
         public async Task<BookItemsDTO> GetItemsAsync(Guid id)
         {
             var data = await unitOfWork.bookItemsRepositiory.GetAsync(id);
@@ -94,27 +95,23 @@ namespace Book.Services
 
         public async Task<bool> UpdateAsync(BookItemsDTO model)
         {
-            try
-            {
-                var data = await unitOfWork.bookItemsRepositiory.GetAsync(model.Id);
-                data.Name = model.Name;
-                data.Description = model.Description;
-                data.price = model.price;
-                data.AuthorName = model.AuthorName;
-                data.FrontImage = model.FrontImage;
-                data.UpdatedDate = DateTime.Now;
-                data.CategoryId = model.CategoryId;
-                await unitOfWork.bookItemsRepositiory.UpdateAsync(data);
-                return await Task.FromResult(true);
-            }
-            catch (Exception ex)
-            {
-                return await Task.FromResult(false);
 
+            var existingnameexist = await unitOfWork.bookItemsRepositiory.FindByAsync(x => x.Name == model.Name && x.Id != model.Id);
+            if (existingnameexist != null)
+            {
+                return false;
             }
-            return await Task.FromResult(false);
-
+            var data = await unitOfWork.bookItemsRepositiory.GetAsync(model.Id);
+            data.Name = model.Name;
+            data.Description = model.Description;
+            data.price = model.price;
+            data.AuthorName = model.AuthorName;
+            data.FrontImage = model.FrontImage;
+            data.UpdatedDate = DateTime.Now;
+            data.CategoryId = model.CategoryId;
+            await unitOfWork.bookItemsRepositiory.UpdateAsync(data);
+            return await Task.FromResult(true);
         }
     }
-    }
+}
 

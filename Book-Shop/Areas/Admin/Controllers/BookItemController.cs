@@ -56,35 +56,24 @@ namespace Book_Shop.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(BookItemsDTO b1, IFormFile FrontImage)
         {
-            try
+
+            var imagePath = await SaveImageAsync(FrontImage);
+            b1.FrontImage = imagePath;
+            var data = await _service.AddAsync(b1);
+            if (data == null)
             {
-                var imagePath = await SaveImageAsync(FrontImage);
-                b1.FrontImage = imagePath; // Assuming FrontImage is meant to hold the path
-
-                var data = await _service.AddAsync(b1);
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    TempData["success"] = "Data is inserted successfully";
-                    return RedirectToAction("Index");
-                }
-
-
+                    TempData["NameExist"] = "Name is already Exist";
             }
-            catch (Exception ex)
+            else
             {
-                throw;
+                TempData["success"] = "Data is inserted successfully";
+                return RedirectToAction("Index");
             }
-
-
             return View();
         }
         public async Task<string> SaveImageAsync(IFormFile FrontImage)
         {
-            string imageurl=null;
+            string imageurl = null;
             var uploadsFolderPath = Path.Combine(_environment.WebRootPath, "uploads");
             if (!Directory.Exists(uploadsFolderPath))
                 Directory.CreateDirectory(uploadsFolderPath);
@@ -188,7 +177,7 @@ namespace Book_Shop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var val =await _categoryService.GetAllAsync();
+            var val = await _categoryService.GetAllAsync();
             ViewBag.data = val.Select(c => new SelectListItem
             {
                 Text = c.Name,
@@ -205,17 +194,21 @@ namespace Book_Shop.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(BookItemsDTO c1,IFormFile FrontImage)
+        public async Task<IActionResult> Edit(BookItemsDTO c1, IFormFile FrontImage)
         {
-            
-                var imagepath=await EditImageAsync(FrontImage);
-                c1.FrontImage=imagepath;
-            
+            var imagepath = await EditImageAsync(FrontImage);
+            c1.FrontImage = imagepath;
+
             var data = await _service.UpdateAsync(c1);
             if (data == true)
             {
                 TempData["update"] = "Update data successfully";
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["NameExist"] = "Name already Exist";
+
             }
 
             return View();
