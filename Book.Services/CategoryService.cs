@@ -19,6 +19,11 @@ namespace Book.Services
 
         public async Task<CategoryDto> AddAsync(CategoryDto model)
         {
+            var existingcategory = await unitOfWork.CategoryReposititory.FindByAsync(x => x.Name.ToLower() == model.Name.ToLower());
+            if (existingcategory != null)
+            {
+                return null;
+            }
             model.Id = Guid.NewGuid();
             Category category = new Category();
             category.Name = model.Name;
@@ -75,8 +80,17 @@ namespace Book.Services
 
         public async Task<bool> UpdateAsync(CategoryDto model)
         {
+            
             try
             {
+                var existingCategory = await unitOfWork.CategoryReposititory
+            .FindByAsync(c => c.Name == model.Name && c.Id != model.Id);
+
+                if (existingCategory != null)
+                {
+                    return false; 
+                }
+
                 var data = await unitOfWork.CategoryReposititory.GetAsync(model.Id);
                 data.Name = model.Name;
                 data.Description = model.Description;

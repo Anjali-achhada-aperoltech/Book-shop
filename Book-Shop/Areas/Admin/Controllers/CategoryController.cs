@@ -35,7 +35,7 @@ namespace Book_Shop.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult>Create(CategoryDto c1)
+        public async Task<IActionResult> Create(CategoryDto c1)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Book_Shop.Controllers
                     var data = await service.AddAsync(c1);
                     if (data == null)
                     {
-                        return NotFound();
+                        TempData["NameExist"] = "Name is already Exist";
                     }
                     else
                     {
@@ -53,7 +53,8 @@ namespace Book_Shop.Controllers
                     }
                 }
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw;
             }
@@ -64,59 +65,45 @@ namespace Book_Shop.Controllers
         {
             try
             {
-                
+
                 var data = await service.GetAsync(id);
                 return View(data);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
         }
         [HttpPost]
-        public async Task<IActionResult>Edit(CategoryDto c1)
+        public async Task<IActionResult> Edit(CategoryDto c1)
         {
             var data = await service.UpdateAsync(c1);
-            if (data == true)
+            if (data == false)
+            {
+                TempData["NameExist"] = "Name already Exist";
+            }
+            else 
             {
                 TempData["update"] = "Update data successfully";
                 return RedirectToAction("Index");
             }
-           
-
             return View();
-           
-        }
-        [HttpGet]
-        public async Task<IActionResult>Delete(Guid id)
-        {
-            var data = await service.GetAsync(id);
-            if(data== null)
-            {
-                return NoContent();
-            }
-            return View(data);
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(CategoryDto c1,Guid id)
-        { 
-            var data=await service.DeleteAsync(id);
+        public async Task<IActionResult> Delete(CategoryDto c1, Guid id)
+        {
+            var data = await service.DeleteAsync(id);
             if (data == true)
             {
                 TempData["delete"] = "Delete Data Successfully";
                 return RedirectToAction("Index");
             }
             return View(data);
-
-
-
         }
         public async Task<IActionResult> Details(Guid id)
         {
             var data = await service.GetAsync(id);
             return View(data);
         }
-
-
     }
 }
