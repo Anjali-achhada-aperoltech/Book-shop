@@ -1,0 +1,32 @@
+﻿@model Book.Business.DTO.AboutUsDto
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3 text-primary">AboutPage Details</h2>
+    <hr />
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 font-weight-bold">Category Name:</dt>
+                <dd class="col-sm-9">@Model.PageTitle</dd>
+
+                <dt class="col-sm-3 font-weight-bold">Description:</dt>
+                <dd class="col-sm-9">@Model.PageDescription</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+

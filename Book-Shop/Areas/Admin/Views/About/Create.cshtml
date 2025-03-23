@@ -1,24 +1,16 @@
-﻿@model Book.Business.DTO.CategoryDto
+﻿@model Book.Business.DTO.AboutUsDto
 
 @{
     ViewData["Title"] = "Create";
 }
-@if (TempData["NameExist"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert" id="Message">
-        <strong>Error!</strong> @TempData["NameExist"]
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-}
+
 
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-lg">
                 <div class="card-header bg-primary text-white text-center">
-                    <h4>Create Category</h4>
+                    <h4>Create AboutPage</h4>
                 </div>
                 <div class="card-body">
                     <form asp-action="Create">
@@ -26,16 +18,16 @@
 
                         <!-- Category Name -->
                         <div class="mb-3">
-                            <label asp-for="Name" class="form-label">Name</label>
-                            <input asp-for="Name" class="form-control" placeholder="Enter category name" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <label asp-for="PageTitle" class="form-label">Name</label>
+                            <input asp-for="PageTitle" class="form-control" placeholder="Enter category name" />
+                            <span asp-validation-for="PageTitle" class="text-danger"></span>
                         </div>
 
                         <!-- Category Description -->
                         <div class="mb-3">
-                            <label asp-for="Description" class="form-label">Description</label>
-                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter description"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
+                            <label asp-for="PageDescription" class="form-label">Description</label>
+                            <textarea asp-for="PageDescription" class="form-control" rows="3" placeholder="Enter description"></textarea>
+                            <span asp-validation-for="PageDescription" class="text-danger"></span>
                         </div>
 
                         <!-- Submit Button -->
@@ -49,6 +41,6 @@
         </div>
     </div>
 </div>
-@section scripts{
-    <script src="~/Admin/js/site.js"> </script>
+@section scripts {
+        <script src="~/Admin/js/site.js"> </script>
 }

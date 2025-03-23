@@ -91,18 +91,18 @@
     </tbody>
 </table>
 @section scripts{
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/Admin/js/site.js"> </script>
     <script>
-    function confirmDelete() {
-        return confirm("Are you sure you want to delete this item?");
-    }
-    <script>
-        $(document).ready(function () {
-            setTimeout(function () {
-                    $("#Message").fadeOut("slow");
-            }, 2000); // 2 seconds (2000 milliseconds)
+            $(document).ready(function () {
+            $('#categoryTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthMenu": [5, 10, 25, 50],
+                "pageLength": 10
+            });
         });
     </script>
-
 
 }

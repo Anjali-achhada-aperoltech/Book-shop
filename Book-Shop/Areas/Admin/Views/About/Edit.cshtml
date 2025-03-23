@@ -1,0 +1,45 @@
+﻿@model Book.Business.DTO.AboutUsDto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Edit AboutPage</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Category Name -->
+                        <div class="mb-3">
+                            <label asp-for="PageTitle" class="form-label">Name</label>
+                            <input asp-for="PageTitle" class="form-control" placeholder="Enter category name" />
+                            <span asp-validation-for="PageTitle" class="text-danger"></span>
+                        </div>
+
+                        <!-- Category Description -->
+                        <div class="mb-3">
+                            <label asp-for="PageDescription" class="form-label">Description</label>
+                            <textarea asp-for="PageDescription" class="form-control" rows="3" placeholder="Enter description"></textarea>
+                            <span asp-validation-for="PageDescription" class="text-danger"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">Update</button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="~/Admin/js/site.js"> </script>
+
+}

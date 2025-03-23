@@ -25,7 +25,7 @@ namespace Book.Services
         public async Task<BookItemsDTO> AddAsync(BookItemsDTO model)
         {
             var existingnameexist = await unitOfWork.bookItemsRepositiory.FindByAsync(x => x.Name == model.Name);
-            if (existingnameexist != null)
+            if (existingnameexist != null && existingnameexist.Any())
             {
                 return null;
             }
@@ -97,7 +97,7 @@ namespace Book.Services
         {
 
             var existingnameexist = await unitOfWork.bookItemsRepositiory.FindByAsync(x => x.Name == model.Name && x.Id != model.Id);
-            if (existingnameexist != null)
+            if (existingnameexist != null && existingnameexist.Any())
             {
                 return false;
             }
