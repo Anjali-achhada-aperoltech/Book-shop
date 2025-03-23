@@ -1,4 +1,4 @@
-﻿@model Book.Business.DTO.CategoryDto
+﻿@model Book.Business.DTO.BookLangageDTO
 
 @{
     ViewData["Title"] = "Create";
@@ -18,7 +18,7 @@
         <div class="col-md-6">
             <div class="card shadow-lg">
                 <div class="card-header bg-primary text-white text-center">
-                    <h4>Create Category</h4>
+                    <h4>Add BookLangauge</h4>
                 </div>
                 <div class="card-body">
                     <form asp-action="Create">
@@ -27,16 +27,12 @@
                         <!-- Category Name -->
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label">Name</label>
-                            <input asp-for="Name" class="form-control" placeholder="Enter category name" />
+                            <input asp-for="Name" class="form-control" placeholder="Enter BookLanguage name" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
                         <!-- Category Description -->
-                        <div class="mb-3">
-                            <label asp-for="Description" class="form-label">Description</label>
-                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter description"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
+
 
                         <!-- Submit Button -->
                         <div class="d-grid gap-2">

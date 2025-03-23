@@ -14,6 +14,8 @@ namespace Book.UOW
         ICartReposititory cartReposititory { get; }
         IOrderHeaderRepositiory orderHeaderRepositiory { get; }
         IOrderDetailRepositiory orderDetailRepositiory { get; }
+        IAboutUsRepostitory aboutUsRepostitory { get; }
+        IBookLanguageRepostiory bookLanguageRepostiory { get; }
 
     }
 }
