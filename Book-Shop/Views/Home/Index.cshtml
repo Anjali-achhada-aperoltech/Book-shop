@@ -24,11 +24,7 @@
             transition: all 0.3s ease-in-out;
         }
 
-            .category-filter a:hover,
-            .category-filter a.active {
-                color: #fff;
-                background-color: #ff6600;
-            }
+          
 
     .card {
         border-radius: 10px;
@@ -74,85 +70,106 @@
     </div>
 </div>
 <div class="latest-products">
-    <div class="category-filter">
-        <a asp-action="Index" asp-controller="Home">All Books</a>
+    <div class="category-filter d-flex flex-wrap gap-2 p-3 bg-light rounded shadow">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-primary text-white">All Books</a>
         @foreach (var category in ViewBag.categorydata)
         {
-            <a asp-action="Index" asp-controller="Home" asp-route-categoryId="@category.Value">@category.Text</a>
+            <a asp-action="Index" asp-controller="Home" asp-route-categoryId="@category.Value" class="btn btn-outline-primary">
+                @category.Text
+            </a>
         }
     </div>
 </div>
+
 
     <div class="container mt-3">
         <div class="row">
             @foreach (var item in Model)
             {
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card shadow-lg border-0 w-30" >
-                        <a href="#">
-                            <img src="~/@item.FrontImage" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover; border-radius:3px">
-                        </a>
-                        <div class="card-body text-center">
-                            <h5 class="card-title">@item.Name</h5>
-                            <h6 class="text-danger fw-bold">
-                                <i class="fa-solid fa-indian-rupee-sign"></i> @item.price
-                            </h6>
+               
+            <div class="col-md-4">
+                <div class="card text-center mb-5 card-container" style="width: 18rem; min-height: 25rem; overflow: hidden;">
+                    <img src="~/@item.FrontImage" class="card-img-top rounded-3" height="180px" width="100%" style="height: 200px; object-fit: cover; border-radius:3px" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <h6 class="card-text text-danger fw-bold">
+                            <i class="fa-solid fa-indian-rupee-sign"></i> @item.price
+                        </h6>&nbsp;
 
-                            <ul class="list-inline stars mb-2">
-                                <li class="list-inline-item"><i class="fa fa-star text-warning"></i></li>
-                                <li class="list-inline-item"><i class="fa fa-star text-warning"></i></li>
-                                <li class="list-inline-item"><i class="fa fa-star text-warning"></i></li>
-                                <li class="list-inline-item"><i class="fa fa-star text-warning"></i></li>
-                                <li class="list-inline-item"><i class="fa fa-star text-warning"></i></li>
-                            </ul>
+                        <!-- Read More / Read Less button -->
+                        <a href="javascript:void(0);" class="btn btn-link btn-sm read-more d-none">Read More</a>
 
-                            <div class="d-flex justify-content-center">
-                                <a asp-action="Details" asp-controller="Home" class="btn btn-outline-primary btn-sm me-2" asp-route-id="@item.Id">
-                                    Details
-                                </a>
-                                <a asp-action="AddCart" asp-controller="Cart" class="btn btn-primary btn-sm" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add To Cart
-                                </a>
-                            </div>
+                        <div class="mt-2">
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-outline-primary btn-sm me-2" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-info-circle"></i> Details
+                            </a>
+                            <a asp-action="AddCart" asp-controller="Cart" class="btn btn-primary btn-sm" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-cart-shopping"></i> Add To Cart
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
             }
         </div>
     </div>
 
-    <div class="best-features">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-heading">
-                        <h2>About Book Shop</h2>
-                    </div>
+<!-- About Section -->
+<div class="best-features">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <h2> About Book Store</h2>
                 </div>
-                <div class="col-md-6">
-                    <div class="left-content">
-                        <h4>Looking for the best products?</h4>
-                        <p><a rel="nofollow" href="https://templatemo.com/tm-546-sixteen-clothing" target="_parent">This template</a> is free to use for your business websites. However, you have no permission to redistribute the downloadable ZIP file on any template collection website. <a rel="nofollow" href="https://templatemo.com/contact">Contact us</a> for more info.</p>
-                        <ul class="featured-list">
-                            <li><a href="#">Lorem ipsum dolor sit amet</a></li>
-                            <li><a href="#">Consectetur an adipisicing elit</a></li>
-                            <li><a href="#">It aquecorporis nulla aspernatur</a></li>
-                            <li><a href="#">Corporis, omnis doloremque</a></li>
-                            <li><a href="#">Non cum id reprehenderit</a></li>
-                        </ul>
-                        <a href="about.html" class="filled-button">Read More</a>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="left-content">
+                    <h4>Looking for the best books?</h4>
+                    <p>
+                        Our bookstore offers a vast collection of books in various genres, from fiction to educational materials. Find your next read today!
+                    </p>
+                    <ul class="featured-list">
+                        <li><i class="fa-solid fa-book"></i> Wide range of books</li>                        
+                        <li><i class="fa-solid fa-truck"></i> Fast delivery</li>
+                        <li><i class="fa-solid fa-hand-holding-usd"></i> Affordable prices</li>
+                        <li><i class="fa-solid fa-headset"></i> 24/7 Customer Support</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">Read More</a>
                 </div>
-                <div class="col-md-6">
-                    <div class="right-image">
-                        <img src="~/Client/assets/images/feature-image.jpg" alt="">
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="right-image">
+                    <img src="~/Client/assets/images/feature-image.jpg" alt="">
                 </div>
-
             </div>
         </div>
     </div>
+</div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".card-container").forEach(function (card) {
+            let contentWrapper = card.querySelector(".content-wrapper");
+            let readMoreBtn = card.querySelector(".read-more");
+
+            // Check if content overflows
+            if (contentWrapper.scrollHeight > contentWrapper.clientHeight) {
+                readMoreBtn.classList.remove("d-none"); // Show Read More button
+            }
+
+            readMoreBtn.addEventListener("click", function () {
+                if (contentWrapper.style.maxHeight) {
+                    contentWrapper.style.maxHeight = "4.5rem";
+                    this.textContent = "Read More";
+                } else {
+                    contentWrapper.style.maxHeight = "none";
+                    this.textContent = "Read Less";
+                }
+            });
+        });
+    });
+</script>
 
 
 
