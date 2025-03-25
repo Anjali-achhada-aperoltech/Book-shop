@@ -1,63 +1,70 @@
-﻿
-@model Book.Business.DTO.LoginDto
+﻿@model Book.Business.DTO.LoginDto
 
 @{
     ViewData["Title"] = "Login";
-    Layout="_Blank";
+    Layout = "_Blank";
 }
-<div class="card row col-4 mx-auto">
-<div class="card-header">
-    <h1>Sign In</h1>
-</div>
-<div class="card-body">
-    <form role="form" class="needs-validation" asp-controller="Account" asp-action="Login" novalidate>
-        @if (TempData["success"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show Register " id="successMessage" role="alert">
-                <strong>@TempData["success"]</strong>
-            </div>
-        }
-        @if (TempData["error"] != null)
-        {
-            <div class="alert alert-danger alert-dismissible fade show Register " id="successMessage" role="alert">
-                <strong>@TempData["error"]</strong>
-            </div>
-        }
-        <div class="form-group">
-            <label for="validationCustomUsername" class="form-label">Email</label>
-            <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-envelope-at-fill"></i></span>
-                <input asp-for="Email" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required placeholder="UserName">
-                <span asp-validation-for="Email" class="text-danger"></span>
-                <div class="valid-feedback">
-                    Submit Sucessfully!
-                </div>
-                <div class="invalid-feedback">
-                    Please Enter Valid UserName!!
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="validationCustom02" class="form-label">Password</label>
-            <input asp-for="Password" class="form-control" id="validationCustom02" required placeholder="Password">
-            <span asp-validation-for="Password" class="text-danger"></span>
-            <div class="valid-feedback">
-                Submit Sucessfully!
-            </div>
-            <div class="invalid-feedback">
-                Please Enter Valid password!!
-            </div>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary" type="submit"><i class="bi bi-person-circle"></i> SIGN IN</button>
-        </div>
-        <div class="form-group">
-            <a asp-action="Register" asp-controller="Account">Don't have an account? Register</a>
-        </div>
-    </form>
-</div>
-</div>
-@section Scripts {
 
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg rounded" style="width: 380px; border-radius: 15px;">
+        <div class="text-center">
+            <img src="~/Admin/img/login.png" alt="User Avatar" class="rounded-circle border shadow-sm mb-3"
+                 style="width: 100px; height: 100px; object-fit: cover;">
+        </div>
+        <div class="card-header bg-primary text-white text-center rounded">
+            <h2><i class="fa-regular fa-circle-user"></i> Sign In</h2>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Account" asp-action="Login" class="needs-validation" novalidate>
+                @if (TempData["success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" id="successMessage" role="alert">
+                        <strong>@TempData["success"]</strong>
+                    </div>
+                }
+                @if (TempData["error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" id="errorMessage" role="alert">
+                        <strong>@TempData["error"]</strong>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input asp-for="Email" class="form-control" id="email" required placeholder="Enter Email">
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input asp-for="Password" type="password" class="form-control" id="password" required placeholder="Enter Password">
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-3 rounded-pill">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+
+                <div class="text-center mt-3">
+                    <a asp-action="Register" asp-controller="Account" class="text-primary">
+                        <i class="fas fa-user-plus"></i> Don't have an account? Register
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
     <script src="~/js/Register-Login.js"></script>
 }
