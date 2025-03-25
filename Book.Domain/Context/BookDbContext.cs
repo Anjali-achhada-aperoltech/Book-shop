@@ -24,6 +24,7 @@ namespace Book.Domain.Context
         public DbSet<AboutUs> AboutUs { get; set; }
         public DbSet<BookLanguage> booklanguage { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<SubCategory> SubCategorys { get; set; }
         public DbSet<BookItems> BookItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }

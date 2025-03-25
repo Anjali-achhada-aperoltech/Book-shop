@@ -9,12 +9,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" style="overflow-y:scroll;">
     <thead>
         <tr>
-            <th>
+           @*  <th>
                 @Html.DisplayNameFor(model => model.Applicationuserid)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -52,9 +52,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.Applicationuserid)
-            </td>
+            </td> *@
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
