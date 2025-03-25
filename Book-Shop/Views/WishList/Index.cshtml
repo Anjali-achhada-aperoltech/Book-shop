@@ -1,0 +1,116 @@
+﻿@model Book.Business.DTO.WishListDTO
+
+<!-- Page Heading -->
+<div class="page-heading about-heading header-text">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-content">
+                    <h4>Wishlist Page</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Display TempData Alert for Deletion Confirmation -->
+@if (TempData["delete"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@TempData["delete"]</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<!-- Wishlist Section -->
+<div class="untree_co-section before-footer-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div class="site-blocks-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail">Image</th>
+                                <th class="product-name">Product</th>
+                                <th class="product-price">Price</th>
+                                <th></th>
+                                <th class="product-remove">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model?.WishlistItems != null && Model.WishlistItems.Any())
+                            {
+                                @foreach (var item in Model.WishlistItems)
+                                {
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <img src="~/@item.BookImage" height="100px" width="115px" alt="Image" class="img-fluid">
+                                        </td>
+                                        <td class="product-name">
+                                            <h2 class="h5 text-black">@item.BookName</h2>
+                                        </td>
+                                        <td>@item.Price</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary">Add To Cart</button>
+                                        </td>
+                                        <td>
+                                            <!-- Delete Button with AJAX -->
+                                            <button onclick="confirmDelete('@item.Id')" class="btn btn-danger">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center">No items in your wishlist.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts Section -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/WishList/DeleteWishList/' + id,
+                        type: 'DELETE',
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire("Deleted!", response.message, "success")
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire("Error!", response.message, "error");
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error!", "Something went wrong!", "error");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

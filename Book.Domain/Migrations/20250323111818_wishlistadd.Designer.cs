@@ -4,6 +4,7 @@ using Book.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Book.Domain.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250323111818_wishlistadd")]
+    partial class wishlistadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,52 +286,6 @@ namespace Book.Domain.Migrations
                     b.ToTable("OrderHeaders");
                 });
 
-            modelBuilder.Entity("Book.Domain.Models.SubCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("SubCategorys");
-                });
-
             modelBuilder.Entity("Book_Shop.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -407,34 +364,9 @@ namespace Book.Domain.Migrations
                     b.Navigation("OrderHeader");
                 });
 
-            modelBuilder.Entity("Book.Domain.Models.WishList", b =>
-                {
-                    b.HasOne("Book.Domain.Models.BookItems", "BookItem")
-                        .WithMany()
-                        .HasForeignKey("BookitemId");
-
-                    b.Navigation("BookItem");
-                });
-
-            modelBuilder.Entity("Book.Domain.Models.SubCategory", b =>
-                {
-                    b.HasOne("Book_Shop.Models.Category", "Category")
-                        .WithMany("subCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("Book.Domain.Models.BookItems", b =>
                 {
                     b.Navigation("Carts");
-                });
-
-            modelBuilder.Entity("Book_Shop.Models.Category", b =>
-                {
-                    b.Navigation("subCategories");
                 });
 #pragma warning restore 612, 618
         }

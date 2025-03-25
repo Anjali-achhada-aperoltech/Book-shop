@@ -4,6 +4,7 @@ using Book.Interfaces.Services;
 using Book_Shop.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Experimental.ProjectCache;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
@@ -19,9 +20,15 @@ namespace Book_Shop.Controllers
             _service = service;
 
         }
-        public async Task<IActionResult> Index(string Searchitems, int limit = 6)
+        public async Task<IActionResult> Index(Guid? categoryId,string Searchitems, int limit = 6)
         {
-            var result = await _service.GetAllAsync();
+            var categorylist = await SeletCategoryList();
+            ViewBag.categorydata= categorylist.Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString()
+            }).ToList();
+            var result = await _service.GetAllCategoryAsync(categoryId);
             if (result == null)
             {
                 return NotFound();
@@ -34,9 +41,13 @@ namespace Book_Shop.Controllers
                                .ToList();
             }
 
-
-
             return View(result);
+
+        }
+        public async Task<List<CategoryDto>> SeletCategoryList()
+        {
+            var result = await _service.SelctCategoryList();
+            return result;
 
         }
 
