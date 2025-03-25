@@ -22,6 +22,7 @@ namespace Book.UOW
             orderDetailRepositiory=new OrderDetailRepositiory(_context);
             aboutUsRepostitory = new AboutUsRepositiory(_context);
             bookLanguageRepostiory=new BookLanguageRepository(_context);
+            wishlistRepositiory = new WishListRepositiory(_context);
         }
         private bool disposed;
         public ICategoryReposititory CategoryReposititory { get; private set; }
@@ -31,6 +32,7 @@ namespace Book.UOW
         public IOrderDetailRepositiory orderDetailRepositiory { get; private set; }
         public IAboutUsRepostitory aboutUsRepostitory { get; private set; }
         public IBookLanguageRepostiory bookLanguageRepostiory { get; private set; }
+        public IwishlistRepositiory wishlistRepositiory { get; private set; }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed && disposing)

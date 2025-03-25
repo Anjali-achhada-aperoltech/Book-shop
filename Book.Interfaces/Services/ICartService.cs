@@ -14,7 +14,7 @@ namespace Book.Interfaces.Services
         Task<bool> DeleteAsync(Guid id);
         Task<bool> IncrementCartItem(Guid id);
         Task<bool>DecreMentItem( Guid id);
-        Task<int> GetQuantity(Guid userid);
+        Task<int> GetQuantity();
 
 
 

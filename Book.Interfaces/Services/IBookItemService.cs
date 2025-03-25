@@ -11,6 +11,7 @@ namespace Book.Interfaces.Services
     public interface IBookItemService
     {
         Task<List<CreateBookDTO>> GetAllAsync();
+        Task<List<CreateBookDTO>> GetAllCategoryAsync(Guid? CategoryId=null);
 
         Task<CreateBookDTO> GetAsync(Guid id);
         Task<BookItemsDTO> GetItemsAsync(Guid id);
@@ -20,5 +21,6 @@ namespace Book.Interfaces.Services
         Task<bool> UpdateAsync(BookItemsDTO model);
 
         Task<bool> DeleteAsync(Guid id);
+        Task<List<CategoryDto>> SelctCategoryList();
     }
 }

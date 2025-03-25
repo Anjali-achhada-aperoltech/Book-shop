@@ -16,6 +16,7 @@ namespace Book.UOW
         IOrderDetailRepositiory orderDetailRepositiory { get; }
         IAboutUsRepostitory aboutUsRepostitory { get; }
         IBookLanguageRepostiory bookLanguageRepostiory { get; }
+        IwishlistRepositiory wishlistRepositiory { get;  }
 
     }
 }

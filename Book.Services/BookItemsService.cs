@@ -2,6 +2,7 @@
 using Book.Domain.Models;
 using Book.Interfaces.Services;
 using Book.UOW;
+using Book_Shop.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ROMS.Services;
@@ -67,10 +68,31 @@ namespace Book.Services
             }
             return list;
         }
+
+        public async Task<List<CreateBookDTO>> GetAllCategoryAsync(Guid? CategoryId=null)
+        {
+            List<CreateBookDTO> list = new List<CreateBookDTO>();
+            var query = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted, includeProperties: "Category");
+
+            if (CategoryId.HasValue)
+            {
+                query = query.Where(x=>x.CategoryId==CategoryId);
+            }
+
+            var data = query.ToList(); // Execute query
+
+            foreach (var item in data)
+            {
+                list.Add(new CreateBookDTO { Id = item.Id, Name = item.Name, Description = item.Description, AuthorName = item.AuthorName, price = item.price, FrontImage = item.FrontImage, CategoryName = item.Category.Name });
+            }
+            return list;
+        }
+
         public async Task<CreateBookDTO> GetAsync(Guid id)
         {
             var data = await unitOfWork.bookItemsRepositiory.GetAsync(id, includeProperties: "Category");
             CreateBookDTO vm = new CreateBookDTO();
+            vm.Id = data.Id;
             vm.Name = data.Name;
             vm.Description = data.Description;
             vm.price = data.price;
@@ -84,6 +106,7 @@ namespace Book.Services
         {
             var data = await unitOfWork.bookItemsRepositiory.GetAsync(id);
             BookItemsDTO vm = new BookItemsDTO();
+            vm.Id = data.Id;
             vm.Name = data.Name;
             vm.Description = data.Description;
             vm.price = data.price;
@@ -93,6 +116,19 @@ namespace Book.Services
             return vm;
         }
 
+        public async Task<List<CategoryDto>> SelctCategoryList()
+        {
+            List<CategoryDto> list = new List<CategoryDto>();
+            var data = await unitOfWork.CategoryReposititory.FindByAsync(x => !x.IsDeleted);
+
+             // Execute query
+
+            foreach (var item in data)
+            {
+                list.Add(new CategoryDto {Id=item.Id,Name=item.Name });
+            }
+            return list;
+        }
         public async Task<bool> UpdateAsync(BookItemsDTO model)
         {
 

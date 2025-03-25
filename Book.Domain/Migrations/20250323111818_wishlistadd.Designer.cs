@@ -4,6 +4,7 @@ using Book.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Book.Domain.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250323111818_wishlistadd")]
+    partial class wishlistadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,43 +286,6 @@ namespace Book.Domain.Migrations
                     b.ToTable("OrderHeaders");
                 });
 
-            modelBuilder.Entity("Book.Domain.Models.WishList", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ApplicationuserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("BookitemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookitemId");
-
-                    b.ToTable("WishList");
-                });
-
             modelBuilder.Entity("Book_Shop.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -396,15 +362,6 @@ namespace Book.Domain.Migrations
                     b.Navigation("BookItem");
 
                     b.Navigation("OrderHeader");
-                });
-
-            modelBuilder.Entity("Book.Domain.Models.WishList", b =>
-                {
-                    b.HasOne("Book.Domain.Models.BookItems", "BookItem")
-                        .WithMany()
-                        .HasForeignKey("BookitemId");
-
-                    b.Navigation("BookItem");
                 });
 
             modelBuilder.Entity("Book.Domain.Models.BookItems", b =>

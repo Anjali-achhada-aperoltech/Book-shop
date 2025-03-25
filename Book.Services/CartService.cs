@@ -17,35 +17,20 @@ namespace Book.Services
             this.httpContextAccessor = httpContextAccessor;
             this.userManager = userManager;
         }
-        public async Task<bool> DecreMentItem( Guid id)
+        public async Task<bool> DecreMentItem(Guid id)
         {
-            //var data = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
-            //if (data == null)
-            //{
-            //    return false;
-            //}
-            //if (data.quantity > 0)
-            //{
-            //    data.quantity -= quantity;
-            //    if (data.quantity < 0) data.quantity = 0; // Prevents the quantity from going negative
-            //    await unitOfWork.cartReposititory.UpdateAsync(data);
-            //    return true;
-            //}
-            //return false;
             var cartItem = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
             if (cartItem == null)
             {
                 return false;
             }
-            if (cartItem.quantity > 0)
+            if (cartItem.quantity > 1)
             {
                 cartItem.quantity -= 1;
                 await unitOfWork.cartReposititory.UpdateAsync(cartItem);
                 return true;
             }
             return false;
-
-
         }
         public async Task<bool> DeleteAsync(Guid id)
         {
@@ -75,16 +60,7 @@ namespace Book.Services
                 v1.Total += (double)(item.BookItem.price * item.quantity);
             }
             return v1;
-
-
-
-
         }
-
-       
-
-    
-
         public async Task<bool> IncrementCartItem(Guid id)
         {
             var cartItem = await unitOfWork.cartReposititory.FindSingleByAsync(x => x.Id == id);
@@ -139,24 +115,27 @@ namespace Book.Services
                 throw;
             }
         }
-        public async Task<int> GetQuantity(Guid userid)
+        public async Task<int> GetQuantity()
         {
             var user = httpContextAccessor.HttpContext.User;
-            var data = userManager.GetUserId(user);
-            var cartItems = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data);
-            var totalQuantity = cartItems.Sum(c => c.quantity);
+            var userId = userManager.GetUserId(user);
 
-            return (int)totalQuantity;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return 0; // User is not logged in
+            }
 
+            var cartItems = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == userId);
 
+            return cartItems?.Sum(c => c.quantity) ?? 0; // Return 0 if cart is empty
         }
     }
 
 
 }
-        
-        
 
 
-    
+
+
+
 
