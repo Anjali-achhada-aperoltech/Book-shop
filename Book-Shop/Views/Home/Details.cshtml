@@ -6,38 +6,27 @@
 
 <div class="container book-details-container py-4 mt-5">
     <div class="row g-4">
-        <!-- Left Side: Book Image -->
+       
         <div class="col-lg-5 col-md-12 text-center">
             <img src="~/@Model.FrontImage" class="img-fluid rounded shadow-lg book-image"
                  onerror="this.src='/images/placeholder.jpg';" alt="Book Image" />
         </div>
 
-        <!-- Right Side: Book Details -->
+      
         <div class="col-lg-7 col-md-12">
             <h2 class="fw-bold mb-2">@Model.Name</h2>
 
-            <!-- Star Rating -->
-            <div class="mb-3 text-warning fs-5">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-            </div>
-
-            <!-- Price -->
+          
             <h4 class="text-danger fw-bold mb-3">
                 <i class="fa-solid fa-indian-rupee-sign"></i> @Model.price
             </h4>
 
             <hr />
-
-            <!-- Description -->
             <p class="text-muted fs-6">@StringHelpers.Truncate(Model.Description, 150)</p>
 
-            <!-- Cart and Wishlist Actions -->
+           
             <div class="d-flex flex-column flex-md-row align-items-center gap-3">
-                <!-- Quantity & Add to Cart -->
+               
                 <form id="add-to-cart-form" asp-action="AddCart" asp-controller="Cart" method="post" class="w-100">
                     <input type="hidden" name="Id" value="@Model.Id" />
                     <div class="d-flex align-items-center">
@@ -52,7 +41,7 @@
                     <div id="result-message" class="text-success mt-2" style="display: none;"></div>
                 </form>
 
-                <!-- Wishlist Button -->
+              
                 <button type="button" class="btn btn-outline-danger w-100 add-to-wishlist-btn"
                         data-bookitemid="@Model.Id">
                     <i class="fa fa-heart"></i> Add to Wishlist
@@ -62,7 +51,7 @@
 
             <hr />
 
-            <!-- Book Details Table -->
+        
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tbody>
