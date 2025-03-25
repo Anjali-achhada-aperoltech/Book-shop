@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Book_Shop</title>
+    <title>@ViewData["Title"] - Book_Store</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Book_Shop.styles.css" asp-append-version="true" />
@@ -22,45 +22,15 @@
         .navbar{
             padding:7px 0px;
         }
-
-
     </style>
 </head>
 <body>
-
-    <header>
+    <header style="background-color:white;">
         <!-- Top Navigation Bar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-light p-1">
-            <div class="container-fluid justify-content-end">
-                <ul class="navbar-nav">
-                    @if (signInManager.IsSignedIn(User))
-                    {
-                        <li class="nav-item">
-                            <span class="nav-link text-dark">Hello, @userManager.GetUserName(User)</span>
-                        </li>
-                        <li class="nav-item">
-                            <form method="post" action="/Account/Logout">
-                                <button type="submit" class="btn btn-outline-danger">Logout</button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="btn btn-outline-primary me-1" href="/Account/Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary" href="/Account/Register">Register</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </nav>
-        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-2">
             <div class="container">
-                <!-- Brand -->
                 <a class="navbar-brand fw-bold text-dark" href="/">
-                    <span class="text-primary">Book Store</span>
+                    <i class="fa fa-book text-primary fw-bold"></i> Book Store
                 </a>
 
                 <!-- Toggler Button (For Mobile) -->
@@ -69,74 +39,91 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- Navbar Content -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav align-items-center fw-bold">
                         <li class="nav-item">
-                            <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
+                            <a class="nav-link text-dark fw-bold" asp-action="Index" asp-controller="Home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-action="GetAll" asp-controller="Product">Book Shop</a>
+                            <a class="nav-link text-dark fw-bold" asp-action="GetAll" asp-controller="Product">Book Shop</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="About">About</a>
+                            <a class="nav-link text-dark fw-bold" asp-action="Index" asp-controller="About">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="Contact">Contact</a>
-                        </li>
-                        
-                    </ul>
 
-                    <!-- Search Form -->
-                    <form class="d-flex me-3">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
-
-                    <!-- Cart & Wishlist -->
-                    <ul class="navbar-nav">
+                        <!-- Cart & Wishlist -->
                         <li class="nav-item me-3">
                             <a class="nav-link position-relative" href="/Cart/Index">
-                                <i class="bi bi-cart fs-5"></i>
-                                <span id="cartlist-count"
-                                      class="badge bg-primary position-absolute top-0 start-100 translate-middle">0</span>
+                                <i class="fa-solid fa-cart-plus fs-5 text-primary"></i>
+                                <span id="cartlist-count" class="badge bg-primary position-absolute top-0 start-100 translate-middle">0</span>
                             </a>
                         </li>
                         <li class="nav-item me-3">
                             <a class="nav-link position-relative" href="/WishList/Index">
                                 <i class="fa fa-heart fs-5 text-danger"></i>
-                                <span id="wishlist-count"
-                                      class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
+                                <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
                             </a>
                         </li>
+
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="nav-link text-dark">
+                                    <i class="fas fa-user-circle me-1"></i> Hello, @userManager.GetUserName(User)
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <form method="post" action="/Account/Logout">
+                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3">
+                                        <i class="fas fa-sign-out-alt me-1"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-outline-primary rounded-pill  me-2" href="/Account/Login">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary rounded-pill px-3" href="/Account/Register">
+                                    <i class="fas fa-user-plus me-1"></i> Register
+                                </a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
             </div>
+
         </nav>
+
+
+        <!-- Main Navigation -->
+       
     </header>
 
+    <main role="main" class="container py-4">
+        @RenderBody()
+    </main>
 
-    <div>
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="inner-content">
-                        <p>
-                            Developed By:Achhada Anjali &&Aacute; Dhara Naliyapara
+    <!-- Footer -->
 
-                        </p>
-                    </div>
-                </div>
-            </div>
+    <footer class="bg-white text-primary py-4 border-top shadow-sm">
+        <div class="container text-center">
+            <h5 class="mb-2 fw-bold">
+                © 2025, Developed By:
+                <strong>
+                    <span class="text-dark fw-bold">Achhada Anjali &</span>
+                    <span class="text-dark fw-bold">Naliyapara Dhara</span>
+                </strong>
+            </h5>          
+           
         </div>
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -159,6 +146,17 @@
                 console.log(err);
             }
         }
+       
+            document.getElementById('searchInput').addEventListener('keyup', function () {
+                let searchText = this.value.toLowerCase();
+                let books = document.querySelectorAll('.book-item');
+
+                books.forEach(book => {
+                    let bookTitle = book.textContent.toLowerCase();
+                    book.style.display = bookTitle.includes(searchText) ? '' : 'none';
+                });
+            });
+    
     </script>
 
     <!-- Additional Scripts -->

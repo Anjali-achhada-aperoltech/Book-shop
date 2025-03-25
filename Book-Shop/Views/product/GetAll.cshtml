@@ -6,6 +6,7 @@
 
 }
 
+
 <div class="latest-products">
     <div class="container">
         <div class="row">
@@ -18,33 +19,59 @@
 
             @foreach (var item in Model)
             {
+              
                 <div class="col-md-4">
-                    <div class="product-item">
-                        <a href="#"><img src="~/@item.FrontImage" height="180px" width="300px" alt=""></a>
-                        <div class="down-content">
-                            <a href="#"><h4>@item.Name</h4></a>
-                            <h6><i class="fa-solid fa-indian-rupee-sign"></i>  @item.price</h6>
+                    <div class="card text-center mb-5 card-container" style="width: 18rem; min-height: 25rem; overflow: hidden;">
+                        <img src="~/@item.FrontImage" class="card-img-top rounded-3" height="180px" width="100%" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <h6 class="card-text text-danger fw-bold">
+                                <i class="fa-solid fa-indian-rupee-sign"></i> @item.price
+                            </h6>&nbsp;                          
 
-                            <ul class="stars">
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                            </ul>
-                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary m-2" asp-route-id="@item.Id">Details</a>
-                            <a asp-action="AddCart" asp-controller="Cart" class="btn btn-primary" asp-route-id="@item.Id"><i class="fa-solid fa-cart-shopping"></i>Add To Cart</a>
+                            <!-- Read More / Read Less button -->
+                            <a href="javascript:void(0);" class="btn btn-link btn-sm read-more d-none">Read More</a>
 
+                            <div class="mt-2">
+                                <a asp-action="Details" asp-controller="Home" class="btn btn-outline-primary btn-sm me-2" asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-info-circle"></i> Details
+                                </a>
+                                <a asp-action="AddCart" asp-controller="Cart" class="btn btn-primary btn-sm" asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-cart-shopping"></i> Add To Cart
+                                </a>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             }
 
 
 
         </div>
-      
 
 
 
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".card-container").forEach(function (card) {
+                    let contentWrapper = card.querySelector(".content-wrapper");
+                    let readMoreBtn = card.querySelector(".read-more");
+
+                    // Check if content overflows
+                    if (contentWrapper.scrollHeight > contentWrapper.clientHeight) {
+                        readMoreBtn.classList.remove("d-none"); // Show Read More button
+                    }
+
+                    readMoreBtn.addEventListener("click", function () {
+                        if (contentWrapper.style.maxHeight) {
+                            contentWrapper.style.maxHeight = "4.5rem";
+                            this.textContent = "Read More";
+                        } else {
+                            contentWrapper.style.maxHeight = "none";
+                            this.textContent = "Read Less";
+                        }
+                    });
+                });
+            });
+        </script>
