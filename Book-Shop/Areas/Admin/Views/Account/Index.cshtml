@@ -1,19 +1,17 @@
 ﻿@model IEnumerable<Book.Business.DTO.ApplicationUserDTO>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="error">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="Message">
         <strong>Sucess!</strong> @TempData["SuccessMessage"];
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 }
-<table class="table">
+<div class="card-body">
+<div class="table-responsive">
+    <table class="table table-bordered" id="categoryTable" width="100%" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -46,11 +44,36 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            <td>
-                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-                    <a asp-action="Update" asp-route-id="@item.id">Update</a>
-            </td>
+                        <td>
+                            <a asp-action="Update" asp-route-id="@item.id" class="btn btn-sm btn-primary rounded-circle">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            
+                            <form asp-action="Delete" asp-route-id="@item.id" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger rounded-circle">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
+</div>
+@section scripts {
+    <script src="~/Admin/js/site.js"> </script>
+    <script>
+            $(document).ready(function () {
+            $('#categoryTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthMenu": [5, 10, 25, 50],
+                "pageLength": 10
+            });
+        });
+    </script>
+
+}

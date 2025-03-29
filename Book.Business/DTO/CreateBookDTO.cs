@@ -27,7 +27,7 @@ namespace Book.Business.DTO
 
         public string CategoryName { get; set; }
         [Required]
-      
+      public string BookLanguageName { get; set; }
 
         public string FrontImage { get; set; }
     }

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Book.Business.DTO.CreateBookDTO>
+<style>
+    .category-title{
+        text-align: center;
+        font-size: larger;
+        margin: 22px;
+        text-transform: uppercase;
+    }
+    .category-title h2{
+        display:inline;
+        border-bottom:2px solid red;
+    }
+</style>
+<div class="page-heading about-heading header-text">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-content">
+                    <h4>BookItem Page</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="category-title">
+    <h2>Book Item</h2>
+</div>
+
+<div class=" py-5">
+    <div class="container">
+        
+
+        <div class="row">
+            @if(Model.Any() && Model!=null){
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <a href="@Url.Action("Details", "Home", new { id = item.Id })">
+                            <img src="@Url.Content(item.FrontImage)" class="card-img-top img-fluid" alt="@item.Name" style="height: 250px; object-fit: cover;">
+                        </a>
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-dark">@item.Name</h5>
+                            <h6 class="text-primary fw-bold">
+                                <i class="fa-solid fa-indian-rupee-sign"></i> @item.price
+                            </h6>
+                            <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id" class="btn btn-primary mt-2">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            }
+            else{
+                <h2 class="text-center text-muted">No Items Avaliable</h2>
+            }
+        </div>
+    </div>
+</div>

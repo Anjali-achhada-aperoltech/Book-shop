@@ -1,28 +1,29 @@
-﻿
+﻿@model IEnumerable<Book.Business.DTO.AboutUsDto>
 @{
     ViewData["Title"] = "Index";
 }
 
 <div class="page-heading about-heading header-text">
-      <div class="container">
+    <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <div class="text-content">
-              <h4>about us</h4>
-              <h2>our company</h2>
+            <div class="col-md-12">
+                <div class="text-content">
+                    <h4>about us</h4>
+                    <h2>our company</h2>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
+</div>
 
-
+@foreach (var item in Model)
+{
     <div class="best-features about-features">
-      <div class="container">
+        <div class="container">
         <div class="row">
           <div class="col-md-12">
             <div class="section-heading">
-              <h2>Our Background</h2>
+              <h2>About Us</h2>
             </div>
           </div>
           <div class="col-md-6">
@@ -32,15 +33,14 @@
           </div>
           <div class="col-md-6">
             <div class="left-content">
-              <h4>Who we are &amp; What we do?</h4>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed voluptate nihil eum consectetur similique? Consectetur, quod, incidunt, harum nisi dolores delectus reprehenderit voluptatem perferendis dicta dolorem non blanditiis ex fugiat. Lorem ipsum dolor sit amet, consectetur adipisicing elit.<br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, consequuntur, modi mollitia corporis ipsa voluptate corrupti eum ratione ex ea praesentium quibusdam? Aut, in eum facere corrupti necessitatibus perspiciatis quis.</p>
-            
+              <h4>@item.PageTitle</h4>
+<p>@item.PageDescription</p>            
             </div>
           </div>
         </div>
       </div>
     </div>
-
+    }
     
    
              

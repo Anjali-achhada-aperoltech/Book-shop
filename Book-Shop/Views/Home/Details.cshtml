@@ -28,12 +28,13 @@
     }
 
 
+
 </style>
 <div class="container book-details-container">
     <div class="row">
         <!-- Left Side: Book Image -->
         <div class="col-lg-5 col-md-12 text-center ">
-            <img src="~/@Model.FrontImage" class="img-fluid rounded shadow book-image" 
+            <img src="@Url.Content(Model.FrontImage)" class="img-fluid rounded shadow book-image"
                  onerror="this.src='/images/placeholder.jpg';" />
         </div>
 

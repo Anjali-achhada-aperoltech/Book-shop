@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe.Climate;
 using System.Security.Claims;
 
 namespace Book_Shop.Areas.Admin.Controllers
@@ -74,7 +75,31 @@ namespace Book_Shop.Areas.Admin.Controllers
 
             return View(vm);
         }
-       
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var orderDetails = await service.GetOrderDetailsAsync(id);
+
+            if (orderDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(orderDetails);
+        }
+
+        // DELETE: Order (Only POST method)
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var isDeleted = await service.DeleteOrderAsync(id);
+            if (!isDeleted)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
 
 

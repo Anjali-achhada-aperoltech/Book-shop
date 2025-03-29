@@ -32,7 +32,8 @@ namespace Book.Domain.Models
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
         [Required]
-
+        public Guid BookLanguageId { get; set; }
+        public BookLanguage bookLanguage { get; set; }
         public string FrontImage {  get; set; }
         public ICollection<Cart> Carts {  get; set; }
         public DateTime CreatedDate { get; set;}=DateTime.Now;
