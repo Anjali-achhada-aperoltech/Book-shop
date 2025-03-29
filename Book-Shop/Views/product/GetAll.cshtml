@@ -92,3 +92,26 @@
 
 
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".card-container").forEach(function (card) {
+                    let contentWrapper = card.querySelector(".content-wrapper");
+                    let readMoreBtn = card.querySelector(".read-more");
+
+                    // Check if content overflows
+                    if (contentWrapper.scrollHeight > contentWrapper.clientHeight) {
+                        readMoreBtn.classList.remove("d-none"); // Show Read More button
+                    }
+
+                    readMoreBtn.addEventListener("click", function () {
+                        if (contentWrapper.style.maxHeight) {
+                            contentWrapper.style.maxHeight = "4.5rem";
+                            this.textContent = "Read More";
+                        } else {
+                            contentWrapper.style.maxHeight = "none";
+                            this.textContent = "Read Less";
+                        }
+                    });
+                });
+            });
+        </script>

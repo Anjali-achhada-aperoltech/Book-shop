@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Book.Business.DTO.ApplicationUserDTO>
 
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-warning alert-dismissible fade show" role="alert" id="Message">

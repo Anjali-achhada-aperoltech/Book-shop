@@ -3,11 +3,6 @@
 @{
     ViewData["Title"] = "Book Details";
 }
-<style>
-    .book-details-container {
-        margin-top: 30px; /* Adds space below the navbar */
-        margin-bottom: 50px; /* Adds space below book details */
-    }
 
     .book-image {
         object-fit: cover;
@@ -40,10 +35,10 @@
 
         <!-- Right Side: Book Details -->
         <div class="col-lg-7 col-md-12">
-            <h2 class="fw-bold">@Model.Name</h2>
+            <h2 class="fw-bold mb-2">@Model.Name</h2>
 
             <!-- Star Rating -->
-            <div class="mb-2 text-warning">
+            <div class="mb-3 text-warning fs-5">
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
@@ -52,68 +47,61 @@
             </div>
 
             <!-- Price -->
-            <h4 class="text-danger">
+            <h4 class="text-danger fw-bold mb-3">
                 <i class="fa-solid fa-indian-rupee-sign"></i> @Model.price
             </h4>
 
             <hr />
 
             <!-- Description -->
-            <p class="text-muted">@StringHelpers.Truncate(Model.Description, 150)</p>
+            <p class="text-muted fs-6">@StringHelpers.Truncate(Model.Description, 150)</p>
 
             <!-- Cart and Wishlist Actions -->
-            <div class="container">
-                <div class="row action-buttons align-items-center">
-                    <!-- Quantity Input & Add to Cart Button -->
-                    <div class="col-md-6">
-                        <form id="add-to-cart-form" asp-action="AddCart" asp-controller="Cart" method="post">
-                            <input type="hidden" name="Id" value="@Model.Id" />
-                            <div class="d-flex">
-                                <div class="input-group quantity-box">
-                                    <span class="input-group-text">Qty</span>
-                                    <input type="number" name="Quantity" value="1" min="1" class="form-control text-center" />
-                                </div>
-                                <button type="submit" class="btn btn-primary ms-2 flex-grow-1">
-                                    <i class="fa fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                            <div id="result-message" style="display: none;"></div>
-                        </form>
-                    </div>
-
-                    <!-- Add to Wishlist Button -->
-                    <div class="col-md-6">
-                            <input type="hidden" name="bookitemId" value="@Model.Id" />
-                        <button type="button" class="btn btn-outline-danger w-100 add-to-wishlist-btn"
-                                data-bookitemid="@Model.Id">
-                            <i class="fa fa-heart"></i> Add to Wishlist
+            <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+                <!-- Quantity & Add to Cart -->
+                <form id="add-to-cart-form" asp-action="AddCart" asp-controller="Cart" method="post" class="w-100">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="d-flex align-items-center">
+                        <div class="input-group quantity-box w-50">
+                            <span class="input-group-text">Qty</span>
+                            <input type="number" name="Quantity" value="1" min="1" class="form-control text-center" />
+                        </div>
+                        <button type="submit" class="btn btn-primary ms-2 w-50">
+                            <i class="fa fa-cart-plus"></i> Add to Cart
                         </button>
-
-                            <div id="wishlist-result-message" class="mt-2 text-success" style="display: none;"></div>
                     </div>
-                </div>
-            </div>
+                    <div id="result-message" class="text-success mt-2" style="display: none;"></div>
+                </form>
 
+                <!-- Wishlist Button -->
+                <button type="button" class="btn btn-outline-danger w-100 add-to-wishlist-btn"
+                        data-bookitemid="@Model.Id">
+                    <i class="fa fa-heart"></i> Add to Wishlist
+                </button>
+                <div id="wishlist-result-message" class="text-success mt-2" style="display: none;"></div>
+            </div>
 
             <hr />
 
             <!-- Book Details Table -->
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td><strong>Author:</strong></td>
-                        <td>@Model.AuthorName</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Category:</strong></td>
-                        <td>@Model.CategoryName</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Shipping:</strong></td>
-                        <td>01 day shipping. <span class="text-muted">(Free pickup today)</span></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">Author:</td>
+                            <td>@Model.AuthorName</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Category:</td>
+                            <td>@Model.CategoryName</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Shipping:</td>
+                            <td>01 day shipping. <span class="text-muted">(Free pickup today)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

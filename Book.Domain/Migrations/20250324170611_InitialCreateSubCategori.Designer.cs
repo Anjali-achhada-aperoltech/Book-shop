@@ -4,6 +4,7 @@ using Book.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Book.Domain.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250324170611_InitialCreateSubCategori")]
+    partial class InitialCreateSubCategori
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,13 +51,13 @@ namespace Book.Domain.Migrations
 
                     b.Property<string>("PageDescription")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PageTitle")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -70,9 +73,6 @@ namespace Book.Domain.Migrations
                     b.Property<string>("AuthorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("BookLanguageId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
@@ -113,8 +113,6 @@ namespace Book.Domain.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookLanguageId");
 
                     b.HasIndex("CategoryId");
 
@@ -375,12 +373,6 @@ namespace Book.Domain.Migrations
 
             modelBuilder.Entity("Book.Domain.Models.BookItems", b =>
                 {
-                    b.HasOne("Book.Domain.Models.BookLanguage", "bookLanguage")
-                        .WithMany()
-                        .HasForeignKey("BookLanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Book_Shop.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -388,8 +380,6 @@ namespace Book.Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("bookLanguage");
                 });
 
             modelBuilder.Entity("Book.Domain.Models.Cart", b =>
@@ -418,15 +408,6 @@ namespace Book.Domain.Migrations
                     b.Navigation("BookItem");
 
                     b.Navigation("OrderHeader");
-                });
-
-            modelBuilder.Entity("Book.Domain.Models.WishList", b =>
-                {
-                    b.HasOne("Book.Domain.Models.BookItems", "BookItem")
-                        .WithMany()
-                        .HasForeignKey("BookitemId");
-
-                    b.Navigation("BookItem");
                 });
 
             modelBuilder.Entity("Book.Domain.Models.SubCategory", b =>

@@ -14,7 +14,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Book_Shop</title>
+    <title>@ViewData["Title"] - Book_Store</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Book_Shop.styles.css" asp-append-version="true" />
@@ -31,8 +31,6 @@
         .navbar{
             padding:7px 0px;
         }
-
-
     </style>
 </head>
 <body>
@@ -155,6 +153,7 @@
         </div>
     </footer>
 
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -176,6 +175,17 @@
                 console.log(err);
             }
         }
+       
+            document.getElementById('searchInput').addEventListener('keyup', function () {
+                let searchText = this.value.toLowerCase();
+                let books = document.querySelectorAll('.book-item');
+
+                books.forEach(book => {
+                    let bookTitle = book.textContent.toLowerCase();
+                    book.style.display = bookTitle.includes(searchText) ? '' : 'none';
+                });
+            });
+    
     </script>
 
     <!-- Additional Scripts -->

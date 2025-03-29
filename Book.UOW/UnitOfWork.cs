@@ -1,4 +1,5 @@
-﻿using Book.Domain.Context;
+﻿using Book.Business.DTO;
+using Book.Domain.Context;
 using Book.Interfaces.Repositiory;
 using Book.Reposittiory;
 using System;
@@ -16,6 +17,7 @@ namespace Book.UOW
         {
             this._context = _context;
             CategoryReposititory = new CategoryRepositiory(_context);
+            SubCategoryRepository = new SubCategoryRepository(_context);
             bookItemsRepositiory = new BookItemsRepostitory(_context);
             cartReposititory = new CartRepostitory(_context);
             orderHeaderRepositiory = new OrderHeaderRepositiory(_context);
@@ -26,6 +28,7 @@ namespace Book.UOW
         }
         private bool disposed;
         public ICategoryReposititory CategoryReposititory { get; private set; }
+        public ISubCategoryRepository SubCategoryRepository { get; private set; }
         public IBookItemsRepositiory bookItemsRepositiory { get; private set; }
         public ICartReposititory cartReposititory { get; private set; }
         public IOrderHeaderRepositiory orderHeaderRepositiory { get; private set; }

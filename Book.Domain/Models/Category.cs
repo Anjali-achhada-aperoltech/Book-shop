@@ -1,4 +1,5 @@
-﻿using ROMS.Domain;
+﻿using Book.Domain.Models;
+using ROMS.Domain;
 using System.ComponentModel.DataAnnotations;
 
 namespace Book_Shop.Models
@@ -13,7 +14,7 @@ namespace Book_Shop.Models
         public string Description { get; set; }
         public DateTime CreatedAt {  get; set; }=DateTime.Now;
         public DateTime ModifiedAt { get; set; } = DateTime.Now;
-
+        public ICollection<SubCategory> subCategories { get; set; }
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public bool IsActive {  get; set; }
