@@ -2,53 +2,93 @@
 @{
 
     ViewData["Title"] = "Home Page";
-   
-
 }
-
-
-<div class="latest-products">
+<div class="page-heading about-heading header-text" style="background: url('~/wwwroot/Client/assets/images/saveimage.jpeg') no-repeat center center; background-size: cover; height: 300px;">
+    >
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="section-heading">
-                    <h2>Latest BookItems</h2>
-                    <a asp-action="Index" asp-controller="Home">view all products <i class="fa fa-angle-right"></i></a>
+                <div class="text-content">
+                    <h4>All Book Item</h4>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
+<div class=" py-5">
+    <div class="container">
+        <div class="row">
             @foreach (var item in Model)
             {
-              
-                <div class="col-md-4">
-                    <div class="card text-center mb-5 card-container" style="width: 18rem; min-height: 25rem; overflow: hidden;">
-                        <img src="~/@item.FrontImage" class="card-img-top rounded-3" height="180px" width="100%" alt="">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <h6 class="card-text text-danger fw-bold">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <a href="@Url.Action("Details", "Home", new { id = item.Id })">
+                            <img src="@Url.Content(item.FrontImage)" class="card-img-top img-fluid" alt="@item.Name" style="height: 250px; object-fit: cover;">
+                        </a>
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-dark">@item.Name</h5>
+                            <h6 class="text-primary fw-bold">
                                 <i class="fa-solid fa-indian-rupee-sign"></i> @item.price
-                            </h6>&nbsp;                          
+                            </h6>
+                            <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id" class="btn btn-primary mt-2">
+                                View Details
+                            </a>
+                            <button class="btn btn-primary mt-2 add-to-cart" data-id="@item.Id">
+                                Add To Cart
+                            </button>
 
-                            <!-- Read More / Read Less button -->
-                            <a href="javascript:void(0);" class="btn btn-link btn-sm read-more d-none">Read More</a>
-
-                            <div class="mt-2">
-                                <a asp-action="Details" asp-controller="Home" class="btn btn-outline-primary btn-sm me-2" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-info-circle"></i> Details
-                                </a>
-                                <a asp-action="AddCart" asp-controller="Cart" class="btn btn-primary btn-sm" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-cart-shopping"></i> Add To Cart
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
             }
-
-
-
         </div>
+</div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart").click(function (event) {
+                event.preventDefault(); // Prevent default navigation
 
+                var productId = $(this).data("id"); // Get Product ID
+                console.log(productId);
+
+                $.ajax({
+                    url: "/Cart/AddItemInCart",
+                    type: "POST",
+                    contentType: "application/json", // Ensure JSON format
+                    data: JSON.stringify({ Id: productId }),
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 2000 // Auto close after 2 seconds
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText); // Debug in console
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "An unexpected error occurred."
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
 
 
 

@@ -37,6 +37,7 @@ namespace Book.Services
             b1.AuthorName = model.AuthorName;
             b1.price = model.price;
             b1.CategoryId = model.CategoryId;
+            b1.BookLanguageId = model.BookLanguageId;
             b1.FrontImage = model.FrontImage;
             var data = await unitOfWork.bookItemsRepositiory.AddAsync(b1);
             return model;
@@ -61,36 +62,40 @@ namespace Book.Services
         public async Task<List<CreateBookDTO>> GetAllAsync()
         {
             List<CreateBookDTO> list = new List<CreateBookDTO>();
-            var data = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted, includeProperties: "Category");
+            var data = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted, includeProperties: "Category,bookLanguage");
             foreach (var item in data)
             {
-                list.Add(new CreateBookDTO { Id = item.Id, Name = item.Name, Description = item.Description, AuthorName = item.AuthorName, price = item.price, FrontImage = item.FrontImage, CategoryName = item.Category.Name });
+                list.Add(new CreateBookDTO { Id = item.Id, Name = item.Name, Description = item.Description, AuthorName = item.AuthorName, price = item.price, FrontImage = item.FrontImage, CategoryName = item.Category.Name,BookLanguageName=item.bookLanguage.Name });
             }
             return list;
         }
 
-        public async Task<List<CreateBookDTO>> GetAllCategoryAsync(Guid? CategoryId=null)
+        public async Task<List<CreateBookDTO>> GetAllCategoryAsync(Guid? CategoryId = null)
         {
-            List<CreateBookDTO> list = new List<CreateBookDTO>();
-            var query = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted, includeProperties: "Category");
+            var query = await unitOfWork.bookItemsRepositiory.FindByAsync(x => !x.IsDeleted, includeProperties: "Category,bookLanguage");
 
             if (CategoryId.HasValue)
             {
-                query = query.Where(x=>x.CategoryId==CategoryId);
+                query = query.Where(x => x.CategoryId == CategoryId).ToList();
             }
 
-            var data = query.ToList(); // Execute query
-
-            foreach (var item in data)
+            return query.Select(item => new CreateBookDTO
             {
-                list.Add(new CreateBookDTO { Id = item.Id, Name = item.Name, Description = item.Description, AuthorName = item.AuthorName, price = item.price, FrontImage = item.FrontImage, CategoryName = item.Category.Name });
-            }
-            return list;
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                AuthorName = item.AuthorName,
+                price = item.price,
+                FrontImage = item.FrontImage,
+                CategoryName = item.Category.Name,
+                BookLanguageName=item.bookLanguage.Name
+                
+            }).ToList();
         }
 
         public async Task<CreateBookDTO> GetAsync(Guid id)
         {
-            var data = await unitOfWork.bookItemsRepositiory.GetAsync(id, includeProperties: "Category");
+            var data = await unitOfWork.bookItemsRepositiory.GetAsync(id, includeProperties: "Category,bookLanguage");
             CreateBookDTO vm = new CreateBookDTO();
             vm.Id = data.Id;
             vm.Name = data.Name;
@@ -99,6 +104,7 @@ namespace Book.Services
             vm.FrontImage = data.FrontImage;
             vm.AuthorName = data.AuthorName;
             vm.CategoryName = data.Category.Name;
+            vm.BookLanguageName = data.bookLanguage.Name;
             return vm;
 
         }
@@ -113,6 +119,7 @@ namespace Book.Services
             vm.FrontImage = data.FrontImage;
             vm.AuthorName = data.AuthorName;
             vm.CategoryId = data.CategoryId;
+            vm.BookLanguageId=data.BookLanguageId;
             return vm;
         }
 

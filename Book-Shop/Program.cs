@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Stripe;
+using Stripe.Checkout;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +49,22 @@ builder.Services.ConfigureApplicationCookie(option =>
     option.SlidingExpiration = true;
     option.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter; 
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+var options = new SessionCreateOptions
+{
+    PaymentIntentData = new SessionPaymentIntentDataOptions
+    {
+        CaptureMethod = "automatic"
+    }
+};
+
 
 var app = builder.Build();
 
@@ -64,6 +81,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("PaymentSettings:SecretKey").Get<string>();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

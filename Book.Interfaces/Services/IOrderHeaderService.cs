@@ -16,5 +16,8 @@ namespace Book.Interfaces.Services
         Task<OrderHeader> orderstatus(Guid id, string OrderStatus, string? PayementStatus = null);
         Task<object> ordersuccess(Guid id);
         Task<CartVm> GetallAsync();
+        Task<List<CartItemDto>> GetAllCartDetails();
+        Task<OrderDetailsDTO> GetOrderDetailsAsync(Guid id);
+        Task<bool> DeleteOrderAsync(Guid id);
     }
 }

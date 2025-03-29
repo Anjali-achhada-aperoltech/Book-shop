@@ -6,6 +6,7 @@ using Book.UOW;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ROMS.Services;
 using Stripe;
 using Stripe.Checkout;
@@ -33,6 +34,28 @@ namespace Book.Services
             orderheader.PaymentIntentId = PaymentId;
             orderheader.SessionId = sessionId;
             return orderheader;
+        }
+        public async Task<List<CartItemDto>> GetAllCartDetails()
+        {
+            var user = httpContextAccessor.HttpContext.User;
+            var userId = userManager.GetUserId(user);
+
+            List<CartItemDto> list = new List<CartItemDto>();
+
+            var getCart = await unitOfWork.cartReposititory.FindByAsync(x => !x.IsDeleted && x.ApplicationuserId == userId, includeProperties: "BookItem");
+
+            foreach (var item in getCart)
+            {
+                list.Add(new CartItemDto
+                {
+                    Name = item.BookItem?.Name ?? "Unknown", // Handle null reference
+                    price = item.BookItem?.price ?? 0, // Ensure price is not null
+                    Quantity = item.quantity ?? 1, // Default to 1 if null
+                    Total = (item.BookItem?.price ?? 0) * (item.quantity ?? 1) // Compute total safely
+                });
+            }
+
+            return list;
         }
 
         public async Task<CartVm> SummeryPage(CartVm cartDto)
@@ -75,46 +98,7 @@ namespace Book.Services
 
                 await unitOfWork.orderDetailRepositiory.AddAsync(orderDetail);
                 await unitOfWork.cartReposititory.RemoveRange(cartDto.Carts);
-
-
             }
-            //var domain = "https://localhost:7071/";
-            //var options = new SessionCreateOptions
-            //{
-            //    LineItems = new List<SessionLineItemOptions>(),
-            //    Mode = "payment",
-            //    SuccessUrl = domain + $"cart/success?id={cartDto.OrderHeader.Id}",
-            //    CancelUrl = domain + $"cart/Index",
-            //};
-            //    foreach (var item in cartDto.Carts)
-            //{
-            //    {
-            //        var lineitemsoptions = new SessionLineItemOptions
-            //        {
-            //            PriceData = new SessionLineItemPriceDataOptions
-            //            {
-            //                UnitAmount =(item.BookItem.price*100) ,
-            //                Currency = "inr",
-            //                ProductData = new SessionLineItemPriceDataProductDataOptions
-            //                {
-            //                    Name = item.BookItem.Name,
-            //                },
-            //            },
-            //            Quantity = 1,
-            //        };
-            //        options.LineItems.Add(lineitemsoptions);
-
-            //}
-            //}
-
-
-            //var service = new SessionService();
-            //Session session = service.Create(options);
-
-            // //Response.Headers.Add("Location", session.Url);
-            // //return new StatusCodeResult(303);
-            //await unitOfWork.cartReposititory.DeleteAllAsync(cartDto.Carts);
-
 
 
 
@@ -123,69 +107,6 @@ namespace Book.Services
         }
         public async Task<object> ordersuccess(Guid id)
         {
-
-            //    var orderHeader = await unitOfWork.orderHeaderRepositiory.FindSingleByAsync(x => x.Id == id);
-            //    var service = new SessionService();
-            //    Session session = await service.GetAsync(orderHeader.SessionId);
-            //    if (session.PaymentStatus.ToLower() == "paid")
-            //    {
-            //        await orderstatus(id, OrderStatus.StatusApproved, PayementStatus.StatusApproved);
-            //    }
-            //    Cart cart = (Cart)await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == orderHeader.ApplicationUserId);
-            //    return id;
-            //}
-            //public async Task<object> ordersuccess(Guid id)
-            //{
-            //    // Retrieve the OrderHeader by its ID
-            //    var orderHeader = await unitOfWork.orderHeaderRepositiory.FindSingleByAsync(x => x.Id == id);
-            //    if (orderHeader == null)
-            //    {
-            //        throw new Exception("Order not found.");
-            //    }
-
-            //    // Check if SessionId is valid
-            //    //if (string.IsNullOrWhiteSpace(orderHeader.SessionId))
-            //    //{
-            //    //    throw new Exception("Invalid session ID.");
-            //    //}
-
-            //    // Initialize the SessionService
-            //    var service = new SessionService();
-
-            //    // Retrieve the session using the SessionId
-            //    Session session;
-            //    try
-            //    {
-            //        session = service.Get(orderHeader.SessionId);
-            //    }
-            //    catch (StripeException ex)
-            //    {
-            //        // Handle possible Stripe exceptions
-            //        throw new Exception("Failed to retrieve session from Stripe.", ex);
-            //    }
-
-            //    if (session == null)
-            //    {
-            //        throw new Exception("Session not found.");
-            //    }
-
-            //    // Check the payment status
-            //    if (session.PaymentStatus != null && session.PaymentStatus.ToLower() == "paid")
-            //    {
-            //        await orderstatus(id, OrderStatus.StatusApproved, PayementStatus.StatusApproved);
-            //    }
-
-            //    // Retrieve the associated cart
-            //    Cart cart = (Cart)await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == orderHeader.ApplicationUserId);
-            //    if (cart == null)
-            //    {
-            //        throw new Exception("Cart not found.");
-            //    }
-            //    List<Cart> cart1 = (List<Cart>)await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == orderHeader.ApplicationUserId);
-
-            //    await unitOfWork.cartReposititory.RemoveRange(cart1);
-            //    return id;
-            // Initialize the SessionService
             var service = new SessionService();
 
             // Retrieve the session using the SessionId
@@ -244,27 +165,42 @@ namespace Book.Services
             }
             return order;
         }
-        //public async Task<object> val(CartVm model)
-        //{
-        //    //var user = httpContextAccessor.HttpContext.User;
-        //    //var data = userManager.GetUserId(user);
-        //    //var cart = new CartVm()
-        //    //{
-        //    //    Carts = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data)
+        public async Task<OrderDetailsDTO> GetOrderDetailsAsync(Guid id)
+        {
+            var order = await unitOfWork.orderHeaderRepositiory.GetAsync(id);
+            if (order == null) return null;
 
-        //    //};
-        //    ////CustomerEmail = model.OrderHeader.CustomerEmail, // Ensure your model has this property
+            var user = await userManager.Users.FirstOrDefaultAsync(m => m.Id == order.ApplicationUserId);
 
+            return new OrderDetailsDTO
+            {
+                Id = order.Id,
+                Applicationuserid = order.ApplicationUserId,
+                FirstName = user?.FirstName,
+                LastName = user?.LastName,
+                email = user?.Email,
+                phoneno = order.phone,
+                Address = order.Address,
+                city = order.City,
+                state = order.state,
+                OrderStatus = order.OrderStatus,
+                OrderDate = order.DateOfOrder,
+                OrderTotal = order.OrderTotal
+            };
+        }
 
-        //    //cart.OrderHeader.Address = cart.OrderHeader.Address;
-        //    //cart.OrderHeader.City = cart.OrderHeader.City;
-        //    //cart.OrderHeader.state = cart.OrderHeader.state;
-        //    //cart.OrderHeader.phone = cart.OrderHeader.phone;
-        //    //return model;
+        // Delete order
+        public async Task<bool> DeleteOrderAsync(Guid id)
+        {
+            var order = await unitOfWork.orderHeaderRepositiory.GetAsync(id);
+            if (order == null) return false;
 
+            await unitOfWork.orderHeaderRepositiory.DeleteAsync(order,true);
 
+            return true;
+        }
 
-        //}
+        
         public async Task<CartVm> GetallAsync()
         {
             var user = httpContextAccessor.HttpContext.User;
@@ -273,10 +209,7 @@ namespace Book.Services
             {
                 Carts = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == data && !x.IsDeleted, includeProperties: "BookItem")
             };
-            //foreach (var item in v1.Carts)
-            //{
-            //    v1.Total += (double)(item.BookItem.price * item.quantity);
-            //}
+            
             return v1;
 
         }

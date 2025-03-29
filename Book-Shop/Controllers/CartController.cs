@@ -25,6 +25,26 @@ namespace Book_Shop.Controllers
 
             return Json(new { success = false, message = "Failed to add product to cart." });
         }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddItemInCart([FromBody] CartDto c1)
+        {
+            if (c1 == null || c1.Id == Guid.Empty)
+            {
+                return Json(new { success = false, message = "Invalid product ID." });
+            }
+
+            c1.quantity = 1; // Ensure quantity starts at 1
+            var data = await cartService.InsertAsync(c1, c1.Id);
+
+            if (data != null && data.Id != Guid.Empty)
+            {
+                return Json(new { success = true, message = "Product added to cart successfully!" });
+            }
+
+            return Json(new { success = false, message = "Failed to add product to cart." });
+        }
+
 
         [Authorize]
         public async Task<IActionResult> Index()

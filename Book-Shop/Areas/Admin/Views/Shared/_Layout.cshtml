@@ -1,7 +1,10 @@
 ﻿@using Book.Domain.Models
+@using Book.Interfaces.Services
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<Applicationuser> signInManager
 @inject UserManager<Applicationuser> userManager
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -167,7 +170,8 @@
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item d-flex align-items-center">
-                                <span class="text-muted font-weight-bold mr-3">Hello, @userManager.GetUserName(User)</span>                              
+                                <span class="text-muted font-weight-bold mr-3">Hello, @userManager.GetUserName(User)</span>
+
                             </li>
                         }
                         else
@@ -179,8 +183,8 @@
                         }
                         <!-- User Profile -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="userDropdown" role="button" data-toggle="dropdown">
-                                <img class="img-profile rounded-circle" src="~/Admin/img/user.jpg" width="30">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                                <img class="img-profile rounded-circle" src="~/Admin/img/user-png-icon-16.jpg" width="30">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">

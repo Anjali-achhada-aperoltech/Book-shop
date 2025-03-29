@@ -36,7 +36,7 @@
                                 {
                                     <tr>
                                         <td class="product-thumbnail">
-                                            <img src="~/@item.BookItem.FrontImage" height="100px" width="115px" alt="Image" class="img-fluid">
+                                            <img src="@Url.Content(item.BookItem.FrontImage)" height="100px" width="115px" alt="Image" class="img-fluid">
                                         </td>
                                         <td class="product-name">
                                             <h2 class="h5 text-black">@item.BookItem.Name</h2>
@@ -83,6 +83,7 @@
                     </<div>
                     </div>
                 </div>
+
                 <div class="col-md-6 pl-5 ">
                     <div class="row justify-content-md-end">
                         <div class="col-md-7">

@@ -18,14 +18,16 @@ namespace Book_Shop.Areas.Admin.Controllers
     {
         private readonly IBookItemService _service;
         private readonly ICategoryService _categoryService;
+        private readonly IBookLanguageService _languageService;
         private readonly IWebHostEnvironment _environment;
 
 
-        public BookItemController(IBookItemService service, ICategoryService _categoryservice, IWebHostEnvironment _environment)
+        public BookItemController(IBookItemService service, ICategoryService _categoryservice, IWebHostEnvironment _environment, IBookLanguageService languageService)
         {
             this._service = service;
             this._categoryService = _categoryservice;
             this._environment = _environment;
+            _languageService = languageService;
         }
         public async Task<IActionResult> Index()
         {
@@ -46,11 +48,18 @@ namespace Book_Shop.Areas.Admin.Controllers
         public async Task<IActionResult> Create()
         {
             var categries = await _categoryService.GetAllAsync();
+            var getbooklanaguage=await _languageService.GetAllAsync();
             ViewBag.data = categries.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
             }).ToList();
+            ViewBag.booklanguage = getbooklanaguage.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString()
+            }).ToList();
+
             return View();
         }
         [HttpPost]
@@ -86,8 +95,10 @@ namespace Book_Shop.Areas.Admin.Controllers
                 await FrontImage.CopyToAsync(fileStream);
             }
 
-            return filePath;
+            // Return relative path instead of full file system path
+            return "/uploads/" + fileName;
         }
+
         private async Task<string> EditImageAsync(IFormFile FrontImage)
         {
             string imageurl = null;

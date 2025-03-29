@@ -32,7 +32,9 @@ namespace Book.Business.DTO
         [Required]
 
         public string FrontImage { get; set; }
-       
+        [Required]
+
+        public Guid BookLanguageId { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
     }

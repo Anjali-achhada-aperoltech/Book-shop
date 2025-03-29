@@ -4,12 +4,33 @@
     ViewData["Title"] = "Book Details";
 }
 
-<div class="container book-details-container py-4 mt-5">
-    <div class="row g-4">
+    .book-image {
+        object-fit: cover;
+        max-height: 400px;
+    }
+
+    .action-buttons {
+        margin-top: 20px;
+    }
+
+    .input-group {
+        max-width: 150px; /* Keep quantity input compact */
+    }
+
+    .book-details-container {
+        padding: 11% 1%;
+        margin: 106px 110px;
+    }
+
+
+
+</style>
+<div class="container book-details-container">
+    <div class="row">
         <!-- Left Side: Book Image -->
-        <div class="col-lg-5 col-md-12 text-center">
-            <img src="~/@Model.FrontImage" class="img-fluid rounded shadow-lg book-image"
-                 onerror="this.src='/images/placeholder.jpg';" alt="Book Image" />
+        <div class="col-lg-5 col-md-12 text-center ">
+            <img src="@Url.Content(Model.FrontImage)" class="img-fluid rounded shadow book-image"
+                 onerror="this.src='/images/placeholder.jpg';" />
         </div>
 
         <!-- Right Side: Book Details -->
