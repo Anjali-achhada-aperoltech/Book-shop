@@ -19,5 +19,8 @@ namespace Book.Interfaces.Services
         Task<List<CartItemDto>> GetAllCartDetails();
         Task<OrderDetailsDTO> GetOrderDetailsAsync(Guid id);
         Task<bool> DeleteOrderAsync(Guid id);
-    }
+        Task<List<OrderDto>> Vieworder();
+        Task<ViewOrderDetailsDto> ViewOrderAsync(Guid id);
+        Task<bool> CancelOrder(Guid orderDetailId);
+        }
 }

@@ -20,6 +20,37 @@ namespace Book_Shop.Controllers
             _service = service;
 
         }
+        public async Task<IActionResult> Search(string searchQuery)
+        {
+            // Fetch all products (or apply any necessary category filtering)
+           var products = await _service.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+
+                // Apply key-wise search filter (name, category name, description)
+                products = products.Where(p => p.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                                                p.CategoryName.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                                                p.Description.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
+                                   .ToList();
+            }
+
+            // Map results to a simplified object for JSON response
+            var searchResults = products.Select(p => new
+            {
+                p.Id,
+                p.Name,
+                p.Description,
+                p.FrontImage,   // Ensure this property matches your model
+                p.price,
+                p.CategoryName
+            }).ToList();
+
+            // Return JSON response with the search results
+            return Json(searchResults);
+        }
+
         public async Task<IActionResult> Index(Guid? categoryId, string searchItems, int page = 1, int limit = 6)
         {
             var categoryList = await SeletCategoryList();

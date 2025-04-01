@@ -21,19 +21,19 @@ namespace Book_Shop.Controllers
            
         }
         [HttpGet]
-        public IActionResult summery()
+        public async Task<IActionResult> summery()
         {
-            return View();
-        }
-        //[HttpPost]
-        //public async Task<IActionResult> summery(CartVm model)
-        //{
-        //    var data=await _service.SummeryPage(model);
-        //    await _service.payementvalue(model.OrderHeader.Id,sessionId,PaymentId);
-        //    Response.Headers.Add("Location", session.Url);
-        //    return new StatusCodeResult(303);
+            var getcartdetails = await _service.GetAllCartDetails();
 
-        //}
+            var cartVm = new CartVm
+            {
+                CartDetails = getcartdetails,
+                Total = getcartdetails.Sum(x => x.Total ?? 0)
+            };
+
+            return View(cartVm);
+        }
+       
         [HttpPost]
         public async Task<IActionResult> summery(CartVm model)
         {
@@ -49,12 +49,13 @@ namespace Book_Shop.Controllers
                 // Prepare Stripe options for session creation
                 var options = new SessionCreateOptions
                 {
+
                     // Un-comment and use if you need to specify the payment method types explicitly.
                     // PaymentMethodTypes = new List<string> { "card" },
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
-                    SuccessUrl = "https://localhost:7071/Summary/success?id=" + model.OrderHeader.Id,
-                    CancelUrl = "https://localhost:7071/home/index",
+                    SuccessUrl = "https://localhost:44301/Summary/success?id=" + model.OrderHeader.Id,
+                    CancelUrl = "https://localhost:44301/home/index",
                    
                     ShippingAddressCollection = new SessionShippingAddressCollectionOptions
                     {
@@ -112,13 +113,9 @@ namespace Book_Shop.Controllers
             }
             
         }
-        //[HttpGet]
-        //public async Task<IActionResult> success(Guid id)
-        //{
-        //    var data =  await _service.ordersuccess(id);
-        //    return View(id);
-        //}
+
         [HttpGet]
+
         public async Task<IActionResult> success(Guid id)
         {
             var data = await _service.ordersuccess(id);

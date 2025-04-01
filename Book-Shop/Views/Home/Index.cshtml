@@ -153,13 +153,17 @@
                         <h5 class="card-title">@item.Description</h5>
 
                         <!-- Read More / Read Less button -->
-                        <a href="javascript:void(0);" class="btn btn-link btn-sm read-more d-none">Read More</a>
+                        <button class="read-more btn btn-link d-none">Read More</button>
 
                         <div class="mt-2">
                             <a asp-action="Details" asp-controller="Home" class="btn btn-outline-primary btn-sm me-2" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-info-circle"></i> Details
                             </a>
-                            
+                            <a asp-action="Details"  class="btn btn-outline-primary btn-sm me-2 add-to-cart" data-id="@item.Id" >
+                                <i class="bi bi-cart"></i> Add to Cart
+                            </a>
+
+
                         </div>
                     </div>
                 </div>
@@ -228,27 +232,6 @@
     </div>
 </div>
 @section scripts{
-    <script>
-                document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".card").forEach(function (card) {
-                let description = card.querySelector(".card-title");
-                let readMoreBtn = card.querySelector(".read-more");
-
-                if (description.scrollHeight > description.clientHeight) {
-                    readMoreBtn.classList.remove("d-none");
-                }
-
-                readMoreBtn.addEventListener("click", function () {
-                    if (description.classList.contains("expanded")) {
-                        description.classList.remove("expanded");
-                        readMoreBtn.textContent = "Read More";
-                    } else {
-                        description.classList.add("expanded");
-                        readMoreBtn.textContent = "Read Less";
-                    }
-                });
-            });
-        });
-
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Client/assets/js/addtocart.js"></script>
 }

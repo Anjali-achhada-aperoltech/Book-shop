@@ -13,7 +13,7 @@ namespace Book_Shop.Controllers
 
         }
       
-            public async Task<IActionResult> GetAll(string Searchitems)
+            public async Task<IActionResult> GetAll(string Searchitems, int page = 1, int limit = 6)
             {
                 var result = await _service.GetAllAsync();
                 if (result == null)
@@ -27,10 +27,14 @@ namespace Book_Shop.Controllers
                                             || x.CategoryName.Contains(Searchitems, StringComparison.OrdinalIgnoreCase))
                                    .ToList();
                 }
+            int totalItems = result.Count();
+            var paginatedResult = result.Skip((page - 1) * limit).Take(limit).ToList();
 
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / limit);
+            ViewBag.SearchItems = Searchitems;
 
-
-                return View(result);
+            return View(paginatedResult);
 
             }
         }

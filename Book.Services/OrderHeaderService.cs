@@ -10,11 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using ROMS.Services;
 using Stripe;
 using Stripe.Checkout;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Book.Services
 {
@@ -213,8 +208,85 @@ namespace Book.Services
             return v1;
 
         }
-      
-        
+        public async Task<List<OrderDto>> Vieworder()
+        {
+            List<OrderDto> vm = new List<OrderDto>();
+            var user = httpContextAccessor.HttpContext.User;
+            var userId = userManager.GetUserId(user);
+
+            // Fetch orders with related order details and book items
+            var orders = await unitOfWork.orderDetailRepositiory.FindByAsync(x=>x.OrderHeader.ApplicationUserId==userId,includeProperties: "OrderHeader,BookItem"
+            );
+
+            foreach (var order in orders)
+            {
+                vm.Add(new OrderDto
+                {
+                    Id = order.Id,
+                    TotalAmount = (int)order.OrderHeader.OrderTotal,
+                    OrderStatus = order.OrderHeader.OrderStatus,
+                    OrderDate = order.OrderHeader.DateOfOrder,
+                    
+                });
+            }
+            return vm;
+        }
+
+        public async Task<ViewOrderDetailsDto> ViewOrderAsync(Guid id)
+        {
+            // Fetch the order details along with related book items
+            var order = await unitOfWork.orderDetailRepositiory
+                .GetAsync(id, includeProperties: "BookItem,OrderHeader");
+
+            if (order == null) return null;
+
+            // Map the order data to the DTO
+            var orderDetailsDto = new ViewOrderDetailsDto
+            {
+                Id = order.Id,
+                TotalAmount = Convert.ToInt32(order.OrderHeader.OrderTotal),
+                OrderStatus = order.OrderHeader.OrderStatus,
+                OrderDate = order.OrderHeader.DateOfOrder,
+                Address = order.OrderHeader.Address,
+                Image=order.BookItem.FrontImage,
+                Name = order.BookItem.Name,
+                price = order.BookItem.price,
+                Quantity = order.quantity,
+                
+
+            };
+
+            return orderDetailsDto;
+        }
+
+        public async Task<bool> CancelOrder(Guid orderDetailId)
+        {
+            // Fetch the order detail by ID including related OrderHeader
+            var orderDetail = await unitOfWork.orderDetailRepositiory.GetAsync(orderDetailId, includeProperties: "OrderHeader");
+
+            if (orderDetail == null)
+            {
+                return false; // Order detail not found
+            }
+
+            // Get the associated OrderHeader
+            var orderHeader = orderDetail.OrderHeader;
+
+            // Remove the order detail (Soft delete by default)
+            await unitOfWork.orderDetailRepositiory.DeleteAsync(orderDetail, isHardDelete: false);
+
+            // Check if there are any other order details associated with the same order header
+            var remainingOrderDetails = await unitOfWork.orderDetailRepositiory
+                .FindByAsync(od => od.OrderHeaderId == orderHeader.Id);
+
+            // If there are no remaining order details, remove the order header as well
+            if (remainingOrderDetails.Any()) // Fixing condition
+            {
+                await unitOfWork.orderHeaderRepositiory.DeleteAsync(orderHeader, isHardDelete: false);
+            }
+
+            return true;
+        }
 
     }
 

@@ -80,10 +80,11 @@ namespace Book_Shop.Controllers
             var data = await cartService.DecreMentItem(id);
             return RedirectToAction("Index", "cart");
         }
-        [Authorize]
         public async Task<IActionResult> GetData()
         {
-            var count = cartService.GetQuantity();
+            var cartdetails = cartService.GetQuantity();
+            var count = cartdetails.Result;
+
             return Json(new { count = count });
 
         }
