@@ -90,16 +90,18 @@ namespace Book_Shop.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(CategoryDto c1, Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var data = await service.DeleteAsync(id);
-            if (data == true)
+            if (data)
             {
-                TempData["delete"] = "Delete Data Successfully";
+                TempData["delete"] = "Category deleted successfully!";
                 return RedirectToAction("Index");
             }
-            return View(data);
+            TempData["delete"] = "Error deleting category!";
+            return RedirectToAction("Index"); 
         }
+
         public async Task<IActionResult> Details(Guid id)
         {
             var data = await service.GetAsync(id);

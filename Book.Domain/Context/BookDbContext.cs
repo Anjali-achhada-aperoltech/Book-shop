@@ -2,6 +2,7 @@
 using Book.Domain.Models;
 using Book_Shop.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -21,6 +22,7 @@ namespace Book.Domain.Context
         {
 
         }
+        public DbSet<ContactUs> ContactUs { get; set; }
         public DbSet<AboutUs> AboutUs { get; set; }
         public DbSet<BookLanguage> booklanguage { get; set; }
         public DbSet<Category> Categories { get; set; }

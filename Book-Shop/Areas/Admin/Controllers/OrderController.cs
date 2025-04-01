@@ -51,6 +51,7 @@ namespace Book_Shop.Areas.Admin.Controllers
                 }
             }
 
+
             // Create the view model list
             foreach (var order in orders)
             {
@@ -75,6 +76,21 @@ namespace Book_Shop.Areas.Admin.Controllers
 
             return View(vm);
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(Guid id, string status)
+        {
+            var order = await unitOfWork.orderHeaderRepositiory.GetAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            order.OrderStatus = status;
+            await unitOfWork.orderHeaderRepositiory.UpdateAsync(order);
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Details(Guid id)
         {
             var orderDetails = await service.GetOrderDetailsAsync(id);
@@ -99,6 +115,7 @@ namespace Book_Shop.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+
 
 
 

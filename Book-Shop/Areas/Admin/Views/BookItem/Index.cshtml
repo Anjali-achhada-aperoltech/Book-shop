@@ -26,7 +26,7 @@
 
 @if (TempData["delete"] != null)
 {
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="Message">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="Message">
         <strong>Sucess!</strong> @TempData["delete"]
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -37,69 +37,116 @@
     <div class="table-responsive">
         <table class="table table-bordered" id="categoryTable" width="100%" cellspacing="0">
             <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.AuthorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FrontImage)
-            </th>
-           
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.AuthorName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AuthorName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FrontImage)
+                    </th>
+
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AuthorName)
+                        </td>
+                        <td>
+                            <i class="fa-solid fa-indian-rupee-sign"></i>  @Html.DisplayFor(modelItem => item.price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                        </td>
+                        <td>
                             <img src="@Url.Content(item.FrontImage)" class="rounded-cirlce" width="100px" height="50px" />
-            </td>
-            <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary rounded-circle">
+                        </td>
+                        <td>
+                            <div class="col-md-4">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm rounded-circle">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info rounded-circle text-white">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm rounded-circle text-white">
                                 <i class="fa-solid fa-circle-info"></i>
                             </a>
-                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display:inline;">
-                                <button type="submit" class="btn btn-sm btn-danger rounded-circle">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </form>
+                            
+                                        <button type="button" class="btn btn-sm btn-danger rounded-circle" data-bs-toggle="modal" data-bs-target="#deleteBookModal_@item.Id">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                           
                         </td>
-        </tr>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@foreach (var item in Model)
+{
+    <div class="modal fade" id="deleteBookModal_@item.Id" tabindex="-1" aria-labelledby="deleteBookLabel_@item.Id" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteBookLabel_@item.Id">
+                        <i class="fa-solid fa-exclamation-triangle"></i> Confirm Delete
+                    </h5>
+                    <button type="button" class="close btn-lg text-white" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="mb-3 text-center text-dark">Are you sure you want to delete this category?</h5>
+                    <div class="card p-3 shadow-sm">
+                        <dl class="row mb-0">
+                            <dt class="col-md-4 text-end fw-semibold">Book Name:</dt>
+                            <dd class="col-md-8">@item.Name</dd>
+
+                            <dt class="col-md-4 text-end fw-semibold">Price:</dt>
+                            <dd class="col-md-8"><i class="fa-solid fa-indian-rupee-sign"></i> @item.price</dd>
+
+                            <dt class="col-md-4 text-end fw-semibold">Author Name:</dt>
+                            <dd class="col-md-8">@item.AuthorName</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
-</div>
-</div>
-@section scripts{
+
+@section scripts {
     <script src="~/Admin/js/site.js"> </script>
     <script>
-            $(document).ready(function () {
+        $(document).ready(function () {
             $('#categoryTable').DataTable({
                 "paging": true,
                 "searching": true,
