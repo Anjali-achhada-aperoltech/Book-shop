@@ -18,6 +18,7 @@ namespace Book.UOW
         IAboutUsRepostitory aboutUsRepostitory { get; }
         IBookLanguageRepostiory bookLanguageRepostiory { get; }
         IwishlistRepositiory wishlistRepositiory { get;  }
+        IContactUsRepository contactUsRepository { get; }
 
     }
 }

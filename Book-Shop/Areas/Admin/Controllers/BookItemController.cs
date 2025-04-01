@@ -2,10 +2,7 @@
 using Book.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Hosting.Internal;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 
@@ -49,12 +46,12 @@ namespace Book_Shop.Areas.Admin.Controllers
         {
             var categries = await _categoryService.GetAllAsync();
             var getbooklanaguage=await _languageService.GetAllAsync();
-            ViewBag.data = categries.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            ViewBag.data = categries.Select(c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
             }).ToList();
-            ViewBag.booklanguage = getbooklanaguage.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            ViewBag.booklanguage = getbooklanaguage.Select(c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
@@ -99,26 +96,41 @@ namespace Book_Shop.Areas.Admin.Controllers
             return "/uploads/" + fileName;
         }
 
-        private async Task<string> EditImageAsync(IFormFile FrontImage)
+        private async Task<string> EditImageAsync(IFormFile FrontImage, string existingImagePath)
         {
-            string imageurl = null;
-            if (FrontImage != null)
+            if (FrontImage == null)
             {
-                imageurl = Path.Combine("uploads", FrontImage.FileName);
+                return existingImagePath;
+            }
 
-                string absoluteFilePath = Path.Combine(_environment.WebRootPath, imageurl);
+            string uploadsFolderPath = Path.Combine(_environment.WebRootPath, "uploads");
 
-                if (System.IO.File.Exists(absoluteFilePath))
+            if (!Directory.Exists(uploadsFolderPath))
+            {
+                Directory.CreateDirectory(uploadsFolderPath);
+            }
+
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(FrontImage.FileName);
+            string filePath = Path.Combine(uploadsFolderPath, fileName);
+
+            
+            if (!string.IsNullOrEmpty(existingImagePath))
+            {
+                string oldFilePath = Path.Combine(_environment.WebRootPath, existingImagePath.TrimStart('/'));
+                if (System.IO.File.Exists(oldFilePath))
                 {
-                    System.IO.File.Delete(absoluteFilePath);
-                }
-                using (var fileStream = new FileStream(absoluteFilePath, FileMode.Create))
-                {
-                    await FrontImage.CopyToAsync(fileStream);
+                    System.IO.File.Delete(oldFilePath);
                 }
             }
-            return imageurl;
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await FrontImage.CopyToAsync(fileStream);
+            }
+
+            return "/uploads/" + fileName; 
         }
+
 
         public async Task<IActionResult> Details(Guid id)
         {
@@ -185,15 +197,25 @@ namespace Book_Shop.Areas.Admin.Controllers
             return false;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var val = await _categoryService.GetAllAsync();
-            ViewBag.data = val.Select(c => new SelectListItem
+            var categories = await _categoryService.GetAllAsync();
+            var languages = await _languageService.GetAllAsync();
+
+            ViewBag.data = categories.Select(c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
             }).ToList();
+
+            ViewBag.booklanguage = languages.Select(l => new SelectListItem
+            {
+                Text = l.Name,
+                Value = l.Id.ToString()
+            }).ToList();
+
             var data = await _service.GetItemsAsync(id);
             if (data == null)
             {
@@ -204,30 +226,30 @@ namespace Book_Shop.Areas.Admin.Controllers
                 return View(data);
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(BookItemsDTO c1, IFormFile FrontImage)
         {
-            var imagepath = await EditImageAsync(FrontImage);
-            c1.FrontImage = imagepath;
+            var existingData = await _service.GetItemsAsync(c1.Id);
+            if (existingData == null)
+            {
+                return NotFound();
+            }
+            c1.FrontImage = await EditImageAsync(FrontImage, existingData.FrontImage);
 
             var data = await _service.UpdateAsync(c1);
-            if (data == true)
+            if (data)
             {
                 TempData["update"] = "Update data successfully";
                 return RedirectToAction("Index");
             }
             else
             {
-                TempData["NameExist"] = "Name already Exist";
-
+                TempData["NameExist"] = "Name already exists";
             }
 
             return View();
-
-
-
-
-
         }
+
     }
 }

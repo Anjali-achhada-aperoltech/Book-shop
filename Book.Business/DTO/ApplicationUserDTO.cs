@@ -16,6 +16,7 @@ namespace Book.Business.DTO
         [DataType(DataType.Date)]
 
         public DateTime DateOfBirth { get; set; }
-        public string? Email { get; set; }  
+        public string? Email { get; set; }
+        public string Role { get; set; }
     }
 }

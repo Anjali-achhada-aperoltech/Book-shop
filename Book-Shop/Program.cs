@@ -28,6 +28,8 @@ builder.Services.AddScoped<IBookItemService, BookItemsService>();
 builder.Services.AddScoped<ICartReposititory, CartRepostitory>();
 builder.Services.AddScoped<IAboutUsRepostitory, AboutUsRepositiory>();
 builder.Services.AddScoped<IAboutUsService, AboutUsService>();
+builder.Services.AddScoped<IContactUsRepository, ContactUsRepository>();
+builder.Services.AddScoped<IContactUsService, ContactUsService>();
 builder.Services.AddScoped<ICartService,CartService>();
 builder.Services.AddScoped<IwishListService, wishListService>();
 builder.Services.AddScoped<IwishlistRepositiory, WishListRepositiory>();

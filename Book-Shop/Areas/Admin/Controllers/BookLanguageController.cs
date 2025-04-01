@@ -2,6 +2,7 @@
 using Book.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Book_Shop.Areas.Admin.Controllers
 {
@@ -30,8 +31,11 @@ namespace Book_Shop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var bookLanguages = await _bookLanguageService.GetAllAsync();
+            ViewBag.booklanguage = new SelectList(bookLanguages, "Id", "LanguageName");
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(BookLangageDTO c1)
         {
@@ -43,7 +47,6 @@ namespace Book_Shop.Areas.Admin.Controllers
                     if (data == null)
                     {
                         TempData["NameExist"] = "Name is already Exist";
-                        return View(c1);
                     }
                     else
                     {
@@ -51,33 +54,38 @@ namespace Book_Shop.Areas.Admin.Controllers
                         return RedirectToAction("Index");
                     }
                 }
-
+               
+                var bookLanguages = await _bookLanguageService.GetAllAsync();
+                ViewBag.booklanguage = new SelectList(bookLanguages, "Id", "LanguageName");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
-            return View();
+            return View(c1);
         }
+
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             try
             {
-
                 var data = await _bookLanguageService.GetAsync(id);
+                var bookLanguages = await _bookLanguageService.GetAllAsync();
+                ViewBag.booklanguage = new SelectList(bookLanguages, "Id", "LanguageName", data.Id);
                 return View(data);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(BookLangageDTO c1)
         {
             var data = await _bookLanguageService.UpdateAsync(c1);
-            if (data == false)
+            if (!data)
             {
                 TempData["NameExist"] = "Name already Exist";
             }
@@ -86,8 +94,12 @@ namespace Book_Shop.Areas.Admin.Controllers
                 TempData["update"] = "Update data successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+            
+            var bookLanguages = await _bookLanguageService.GetAllAsync();
+            ViewBag.booklanguage = new SelectList(bookLanguages, "Id", "LanguageName", c1.Id);
+            return View(c1);
         }
+
         [HttpPost]
         public async Task<IActionResult> Delete(BookLangageDTO c1, Guid id)
         {
