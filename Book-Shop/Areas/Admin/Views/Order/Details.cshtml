@@ -7,40 +7,55 @@
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-lg">
+            <div class="card shadow-lg border-0 bg-light dark:bg-dark text-dark dark:text-light">
                 <div class="card-header bg-primary text-white">
-                    <h4>Order Details</h4>
+                    <h4><i class="fas fa-receipt"></i> Order Details</h4>
                 </div>
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="col-sm-4">Customer Name:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-user"></i> Customer Name:</dt>
                         <dd class="col-sm-8">@Model.FirstName @Model.LastName</dd>
 
-                        <dt class="col-sm-4">Email:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-envelope"></i> Email:</dt>
                         <dd class="col-sm-8">@Model.email</dd>
 
-                        <dt class="col-sm-4">Phone:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-phone"></i> Phone:</dt>
                         <dd class="col-sm-8">@Model.phoneno</dd>
 
-                        <dt class="col-sm-4">Address:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-map-marker-alt"></i> Address:</dt>
                         <dd class="col-sm-8">@Model.Address, @Model.city, @Model.state</dd>
 
-                        <dt class="col-sm-4">Order Status:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-info-circle"></i> Order Status:</dt>
                         <dd class="col-sm-8">
-                            <span class="badge @(Model.OrderStatus == "Completed" ? "bg-success" : "bg-warning")">
+                            <span class="badge
+                                @(Model.OrderStatus == "Pending" ? "bg-warning text-dark" :
+                                  Model.OrderStatus == "Processing" ? "bg-info text-white" :
+                                  Model.OrderStatus == "Shipped" ? "bg-warning text-dark" :
+                                  Model.OrderStatus == "Completed" ? "bg-success text-white" :
+                                  "bg-danger")">
+                                <i class="
+                                @(Model.OrderStatus == "Pending" ? "fas fa-clock" :
+                                  Model.OrderStatus == "Processing" ? "fas fa-cogs" :
+                                  Model.OrderStatus == "Shipped" ? "fas fa-truck" :
+                                  Model.OrderStatus == "Completed" ? "fas fa-check-circle" :
+                                  "fas fa-times-circle")"></i>
                                 @Model.OrderStatus
                             </span>
                         </dd>
 
-                        <dt class="col-sm-4">Order Date:</dt>
+                        <dt class="col-sm-4"><i class="fas fa-calendar-alt"></i> Order Date:</dt>
                         <dd class="col-sm-8">@Model.OrderDate.ToString("dd-MMM-yyyy")</dd>
 
-                        <dt class="col-sm-4">Order Total:</dt>
-                        <dd class="col-sm-8"><strong>@Model.OrderTotal</strong></dd>
+                        <dt class="col-sm-4"><i class="fas fa-money-bill-wave"></i> Order Total:</dt>
+                        <dd class="col-sm-8">
+                            <i class="fa-solid fa-indian-rupee-sign"></i> <strong>@Model.OrderTotal</strong>
+                        </dd>
                     </dl>
                 </div>
                 <div class="card-footer text-center">
-                    <a asp-action="Index" class="btn btn-secondary">Back to Orders</a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Orders
+                    </a>
                 </div>
             </div>
         </div>

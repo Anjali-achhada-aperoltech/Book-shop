@@ -1,0 +1,35 @@
+﻿@model Book.Business.DTO.ContactUsDTO
+
+@{
+    ViewData["Title"] = "Contact Us Details";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3 text-primary">Contact Us Details</h2>
+    <hr />
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 font-weight-bold">Name:</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3 font-weight-bold">Email:</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3 font-weight-bold">Subject:</dt>
+                <dd class="col-sm-9">@Model.Subject</dd>
+
+                <dt class="col-sm-3 font-weight-bold">Message:</dt>
+                <dd class="col-sm-9">@Model.Message</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+      
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>

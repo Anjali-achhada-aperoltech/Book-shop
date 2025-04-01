@@ -10,8 +10,7 @@ namespace Book.Domain.Models
 {
     public class ContactUs:BaseEntity
     {
-        public class Contact
-        {
+       
             [Required, StringLength(100)]
             public string Name { get; set; }
 
@@ -29,6 +28,6 @@ namespace Book.Domain.Models
             public string? ModifiedBy { get; set; }
             public bool IsActive { get; set; }
             public bool IsDeleted { get; set; }
-        }
+        
     }
 }

@@ -40,6 +40,29 @@ namespace Book_Shop.Areas.Admin.Controllers
 
             return View(userList);
         }
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var currentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "User";
+
+            var viewModel = new ApplicationUserDTO
+            {
+                id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                Role = currentRole
+            };
+
+            return View(viewModel);
+        }
 
         [HttpPost]
         public IActionResult ChangeRole(string id, string role)
