@@ -1,0 +1,70 @@
+﻿@model Book.Business.DTO.ViewOrderDetailsDto
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="container mt-5 p-5 pt-3">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3>Order Details</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Image Section -->
+                <div class="col-md-4 text-center">
+                    <img src="@Model.Image" alt="@Model.Name" class="img-fluid rounded shadow">
+                </div>
+                <!-- Order Info Section -->
+                <div class="col-md-8">
+                    <h5><strong>Book Name:</strong> @Model.Name</h5>
+                    <p><strong>Price:</strong> $@Model.price</p>
+                    <p><strong>Quantity:</strong> @Model.Quantity</p>
+                    <p><strong>Total Amount:</strong> @Model.TotalAmount</p>
+                    <p><strong>Order Status:</strong> <span class="badge bg-success">@Model.OrderStatus</span></p>
+                    <p><strong>Order Date:</strong> @Model.OrderDate.ToString("MMM dd, yyyy")</p>
+                    <p><strong>Shipping Address:</strong> @Model.Address</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <form asp-action="CancelOrder" asp-controller="ViewOrder" method="post">
+                <input type="hidden" name="id" value="@Model.Id">
+                <button type="submit" class="btn btn-danger">
+                    Cancel Order
+                </button>
+            </form>
+            <a asp-action="Index" asp-controller="ViewOrder" class="btn btn-secondary mt-2">
+                Back to Orders List
+            </a>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["AlertMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: "Success!",
+                text: "@TempData["AlertMessage"]",
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: "Error!",
+                text: "@TempData["ErrorMessage"]",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        </script>
+    }
+
+}

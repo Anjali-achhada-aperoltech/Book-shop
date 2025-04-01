@@ -78,6 +78,8 @@ namespace Book.Services
         {
             try
             {
+                var bookItemExists = await unitOfWork.bookItemsRepositiory.FindByAsync(b => b.Id == Id);
+
                 cart.Id = Guid.NewGuid();
                 cart.BookitemId = Id;
                 var user = httpContextAccessor.HttpContext.User;
@@ -107,7 +109,18 @@ namespace Book.Services
 
                     await unitOfWork.cartReposititory.AddAsync(newCart);
                 }
+                var existingWishlistItem = await unitOfWork.wishlistRepositiory.FindSingleByAsync(
+            w => w.ApplicationuserId == data && w.BookitemId == Id && !w.IsDeleted);
+
+                if (existingWishlistItem != null)
+                {
+                    await unitOfWork.wishlistRepositiory.DeleteAsync(existingWishlistItem, isHardDelete: true);
+
+                }
+
                 await unitOfWork.cartReposititory.SaveAsync();
+                await unitOfWork.wishlistRepositiory.SaveAsync();
+
                 return cart;
             }
             catch (Exception ex)
@@ -117,21 +130,15 @@ namespace Book.Services
         }
         public async Task<int> GetQuantity()
         {
-            var user = httpContextAccessor.HttpContext.User;
-            var userId = userManager.GetUserId(user);
+            // Fetch cart items for the user that are not marked as deleted
+            var cartItems = await unitOfWork.cartReposititory.FindByAsync(
+                 x=> !x.IsDeleted); // Add check for soft delete (if applicable)
 
-            if (string.IsNullOrEmpty(userId))
-            {
-                return 0; // User is not logged in
-            }
-
-            var cartItems = await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == userId);
-
-            return cartItems?.Sum(c => c.quantity) ?? 0; // Return 0 if cart is empty
+            return cartItems?.Select(c => c.BookitemId).Distinct().Count() ?? 0;
         }
+
+
     }
-
-
 }
 
 

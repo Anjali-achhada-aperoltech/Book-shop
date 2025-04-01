@@ -55,25 +55,35 @@
         <div class="col-lg-7 pe-xl-6">
             <form action="summery" method="post">
                 <h3 class="text-primary mb-5 mt-5">Address </h3>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 <hr/>
                 <div class="row">
                     
                     <div class="mb-3 col-md-6 mb-4">
                         <label class="form-label" for="street_invoice">Address</label>
                         <input class="form-control form-control-underlined ps-0" type="text" asp-for="@Model.Address" placeholder="Enter Address">
+                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+
                     </div>
                     <div class="mb-3 col-md-6 mb-4">
                         <label class="form-label" for="city_invoice">City</label>
                         <input class="form-control form-control-underlined ps-0" type="text" asp-for="@Model.City" placeholder="Enter City">
+                        <span asp-validation-for="@Model.City" class="text-danger"></span>
+
                     </div>
                     
                     <div class="mb-3 col-md-6 mb-4">
                         <label class="form-label" for="state_invoice">State</label>
                         <input class="form-control form-control-underlined ps-0" type="text"  asp-for="@Model.state" placeholder="Enrer State">
+                        <span asp-validation-for="@Model.state" class="text-danger"></span>
+
                     </div>
                     <div class="mb-3 col-md-6 mb-4">
                         <label class="form-label" for="phonenumber_invoice">Phone Number</label>
                         <input class="form-control form-control-underlined ps-0" type="number"  asp-for="@Model.phone" placeholder="Enter Phone no">
+                        <span asp-validation-for="@Model.phone" class="text-danger"></span>
+
                      </div>
                     <div class="mb-3 col-12 mt-3">
                         
@@ -89,27 +99,43 @@
                 <!-- /Shipping Address                            -->
             </form> 
         </div>
-              <div class="col-lg-5">
-            <h5 class="text-primary mb-5 mt-5">Order Summary</h5>
-            <table class="table border-bottom border-dark mb-5">
-               
-                    <tr class="text-sm">
-                        <th class="py-4 fw-normal text-muted">Ikagai <span>x 2</span></th>
-                        <td class="py-4 text-end text-muted">$520</td>
-                    </tr>
-                  
-                    <tr>
-                        <th class="py-4 text-uppercase fw-normal text-sm align-bottom">Order Subtotal </th>
-                        <td class="py-4 text-end text-muted">520</td>
-                    </tr>
-                   
-                    <tr>
-                        <th class="py-4 text-uppercase fw-normal border-dark align-bottom">Total</th>
-                        <td class="py-4 text-end h3 fw-normal border-dark">$520.00</td>
-                    </tr>
-                
-            </table> 
-           
-        </div>
+            <div class="col-lg-5">
+                <h5 class="text-primary mb-5 mt-5">Order Summary</h5>
+                <table class="table border-bottom border-dark mb-5">
+                    <tbody>
+                        @{
+                            decimal grandTotal = 0;
+                        }
+
+                        @foreach (var item1 in Model.CartDetails)
+                        {
+                            decimal itemTotal = (item1.Quantity ?? 1) * (item1.price ?? 0);
+                            grandTotal += itemTotal;
+
+                            <tr class="text-sm">
+                                <th class="py-4 fw-normal text-muted">@item1.Name <span>x @item1.Quantity</span></th>
+                                <td class="py-4 text-end text-muted">@itemTotal.ToString("C")</td>
+                            </tr>
+                        }
+
+                        <!-- Order Subtotal -->
+                        <tr>
+                            <th class="py-4 text-uppercase fw-normal text-sm align-bottom">Order Subtotal </th>
+                            <td class="py-4 text-end text-muted">@grandTotal.ToString("C")</td>
+                        </tr>
+
+                        <!-- Grand Total -->
+                        <tr>
+                            <th class="py-4 text-uppercase fw-normal border-dark align-bottom">Total</th>
+                            <td class="py-4 text-end h3 fw-normal border-dark">@grandTotal.ToString("C")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+          
     </div>
 </div> 
+@section scripts{
+    <partial name="_validationpartial.cshtml"/>
+}

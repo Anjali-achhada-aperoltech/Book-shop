@@ -31,6 +31,13 @@
         .navbar{
             padding:7px 0px;
         }
+        header{
+            position:fixed;
+            top:0;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -54,7 +61,7 @@
                             <a class="nav-link text-dark fw-bold" asp-action="Index" asp-controller="Home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark fw-bold" asp-action="GetAll" asp-controller="Product">Book Shop</a>
+                            <a class="nav-link text-dark fw-bold" asp-action="GetAll" asp-controller="Product">All Book</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark fw-bold" asp-action="Index" asp-controller="About">About</a>
@@ -91,7 +98,28 @@
                                 <span id="wishlist-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
                             </a>
                         </li>
-                       
+
+                        <!-- Search Icon -->
+                        <li class="nav-item me-3">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                <i class="fas fa-search text-dark"></i>
+                            </a>
+                        </li>
+                        <!-- Search Modal -->
+                        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="searchModalLabel">Search Products</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="text" id="searchQuery" class="form-control" placeholder="Search for products..." onkeyup="searchProducts()">
+                                        <div id="searchResults" class="row mt-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         @if (signInManager.IsSignedIn(User))
                         {
@@ -124,11 +152,36 @@
                     </ul>
                 </div>
             </div>
-
         </nav>
 
+        <!-- Search Modal -->
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="searchModalLabel">Search Books</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Search Form -->
+                        <form  id="searchForm">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="searchQuery" name="searchQuery" placeholder="Search for books..." onkeyup="searchProducts()" />
+                            </div>
+                        </form>
+                        <div id="searchResults">
+                            <!-- Search results will be populated here -->
+                        </div>
 
-        <!-- Main Navigation -->
+                        <!-- Pagination (if needed) -->
+                        <div id="pagination">
+                            <!-- Pagination controls can be added here -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </header>
 
@@ -175,17 +228,64 @@
                 console.log(err);
             }
         }
-       
-            document.getElementById('searchInput').addEventListener('keyup', function () {
-                let searchText = this.value.toLowerCase();
-                let books = document.querySelectorAll('.book-item');
+    </script>
+    <script>
+        // Function to perform AJAX search on keyup
+        function searchProducts() {
+            const searchQuery = document.getElementById('searchQuery').value.trim();
 
-                books.forEach(book => {
-                    let bookTitle = book.textContent.toLowerCase();
-                    book.style.display = bookTitle.includes(searchText) ? '' : 'none';
-                });
+            // If the search query is empty, clear the results and return
+            if (searchQuery === "") {
+                document.getElementById('searchResults').innerHTML = '';
+                return;
+            }
+
+            // Send AJAX request to the controller
+            fetch(`/Home/Search?searchQuery=${searchQuery}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display search results dynamically
+                    renderSearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Function to render search results
+                function renderSearchResults(data) {
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            if (data.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-center text-muted">No results found</p>';
+                return;
+            }
+
+            let row = '<div class="row">';
+
+            data.forEach(product => {
+                row += `
+                    <div class="col-md-6 mt-3">
+                        <div class="card text-center shadow-sm" style="width: 100%; min-height: 25rem;">
+                            <img src="${product.frontImage}" class="card-img-top rounded-3"
+                                height="180px" style="object-fit: cover; border-radius:3px" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <h6 class="card-text text-danger fw-bold">
+                                    <i class="fa-solid fa-indian-rupee-sign"></i> ${product.price}
+                                </h6>
+                                <a href="/Home/Details/${product.id}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa-solid fa-info-circle"></i> Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
-    
+
+            row += '</div>';
+            resultsContainer.innerHTML = row;
+        }
+
     </script>
 
     <!-- Additional Scripts -->
@@ -195,6 +295,8 @@
     <script src="~/Client/assets/js/isotope.js"></script>
     <script src="~/Client/assets/js/accordions.js"></script>
     <script src="~/Client/assets/js/ItemCount.js"></script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

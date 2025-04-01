@@ -38,6 +38,8 @@ builder.Services.AddScoped<IOrderHeaderRepositiory, OrderHeaderRepositiory>();
 builder.Services.AddScoped<IOrderDetailRepositiory, OrderDetailRepositiory>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("PayementSettings:SecretKey"));
+
+
 builder.Services.AddIdentity<Applicationuser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddDbContext<Book.Domain.Context.ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.ConfigureApplicationCookie(option =>
@@ -51,11 +53,16 @@ builder.Services.ConfigureApplicationCookie(option =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder => builder.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+    options.AddPolicy("AllowStripe",
+        builder =>
+        {
+            builder.WithOrigins("https://checkout.stripe.com") // Allow Stripe
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
+
+
 
 var options = new SessionCreateOptions
 {
@@ -82,7 +89,7 @@ app.UseStaticFiles();
 app.UseRouting();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("PaymentSettings:SecretKey").Get<string>();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowStripe");
 
 app.UseAuthentication();
 app.UseAuthorization();

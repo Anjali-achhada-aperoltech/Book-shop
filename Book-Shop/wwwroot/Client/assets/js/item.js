@@ -59,7 +59,7 @@
             return;
         }
 
-        sendAjaxRequest("/WishList/AddWishList", { BookitemId: BookitemId }, "#wishlist-result-message", "Item added to wishlist!", "Failed to add item to wishlist.");
+        sendAjaxRequest("/WishList/AddWishList", { BookitemId: BookitemId }, "#wishlist-result-message", "Item added to wishlist!", .");
     });
 
 });
