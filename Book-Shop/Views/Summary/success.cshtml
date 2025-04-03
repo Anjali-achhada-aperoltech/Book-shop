@@ -1,23 +1,71 @@
-﻿@* @inject IOptions<Book.Business.DTO.StripeSettings> Stripe
-
- @using Microsoft.Extensions.Options
-@model int
-
-
-<h1>success</h1>
-
-
-<h1>
-    Your order is success @Model
-</h1> *@
-@model Book.Business.DTO.CartVm
-<h1>Order Success</h1>
-@if (Model != null)
-{
-    <h2>Your order with ID: @Model.Id has been successfully placed!</h2>
-    <p>Thank you for your order. Your payment status is @Model.OrderHeader.PaymentStatus</p>
+﻿@model OrderSuccessResponse
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Blank";
 }
-else
-{
-    <p>There was a problem displaying your order details.</p>
-}
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            text-align: center;
+        }
+        .icon {
+            font-size: 50px;
+            color: #4CAF50;
+        }
+        .message {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+        .details {
+            font-size: 18px;
+            color: #555;
+        }
+        .payment-status {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 20px;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+    <div class="container">
+        <div class="icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="message">
+            Order  has been successfully processed!
+        </div>
+    <button class="button" onclick="window.location.href='/ViewOrder/index'">View Order</button>
+
+        <button class="button" onclick="window.location.href='/home/index'">Return to Home</button>
+    </div>
+

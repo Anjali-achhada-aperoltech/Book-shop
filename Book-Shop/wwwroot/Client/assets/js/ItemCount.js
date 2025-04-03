@@ -2,29 +2,25 @@
 
     function updateWishlistCount() {
         $.ajax({
-            url: "/WishList/GetWishlistCount", // API to get count
+            url: "/WishList/GetWishlistCount", // API to get wishlist count
             type: "GET",
             dataType: "json",
             success: function (response) {
-                $("#wishlist-count").text(response.count); // Update count in header
+                $("#wishlist-count").text(response.count || 0); // Ensure 0 if undefined
             },
             error: function () {
                 console.error("Error fetching wishlist count.");
             }
         });
     }
-    updateWishlistCount();
 
     function updateCartCount() {
         $.ajax({
-            url: "/Cart/GetData",
+            url: "/Cart/GetData", // API to get cart count
             type: "GET",
             dataType: "json",
             success: function (response) {
-                if (response.count !== undefined) {
-                    // Update the cart count in the header
-                    $("#cartlist-count").text(response.count);
-                }
+                $("#cartlist-count").text(response.count || 0); // Ensure 0 if undefined
             },
             error: function () {
                 console.error("Error fetching cart count.");
@@ -32,10 +28,7 @@
         });
     }
 
-    // Call this function when the page loads to get the initial count
+    // Call both functions once the page loads
+    updateWishlistCount();
     updateCartCount();
-
-    
-
-    });
-
+});

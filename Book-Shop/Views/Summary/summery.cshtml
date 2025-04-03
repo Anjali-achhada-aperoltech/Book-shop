@@ -137,5 +137,6 @@
     </div>
 </div> 
 @section scripts{
-    <partial name="_validationpartial.cshtml"/>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
 }

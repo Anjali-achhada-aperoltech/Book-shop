@@ -128,14 +128,16 @@ namespace Book.Services
                 throw;
             }
         }
+       
         public async Task<int> GetQuantity()
         {
-            // Fetch cart items for the user that are not marked as deleted
-            var cartItems = await unitOfWork.cartReposititory.FindByAsync(
-                 x=> !x.IsDeleted); // Add check for soft delete (if applicable)
+            var cartItems = await unitOfWork.cartReposititory.FindByAsync(x => !x.IsDeleted);
 
-            return cartItems?.Select(c => c.BookitemId).Distinct().Count() ?? 0;
+            int count = cartItems.Select(c => c.BookitemId).Distinct().Count();
+
+            return count > 0 ? count : 0; // Ensure 0 if no items
         }
+
 
 
     }
