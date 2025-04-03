@@ -82,12 +82,11 @@ namespace Book_Shop.Controllers
         }
         public async Task<IActionResult> GetData()
         {
-            var cartdetails = cartService.GetQuantity();
-            var count = cartdetails.Result;
+            var count = await cartService.GetQuantity();  // Use 'await' here
 
             return Json(new { count = count });
-
         }
+
     }
 }
 

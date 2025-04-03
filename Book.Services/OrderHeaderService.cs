@@ -28,6 +28,8 @@ namespace Book.Services
             var orderheader = await unitOfWork.orderHeaderRepositiory.FindSingleByAsync(x => x.Id == id);
             orderheader.PaymentIntentId = PaymentId;
             orderheader.SessionId = sessionId;
+             await unitOfWork.orderHeaderRepositiory.UpdateAsync(orderheader);
+
             return orderheader;
         }
         public async Task<List<CartItemDto>> GetAllCartDetails()
@@ -100,7 +102,7 @@ namespace Book.Services
             return cartDto;
 
         }
-        public async Task<object> ordersuccess(Guid id)
+        public async Task<OrderSuccessResponse> ordersuccess(Guid id)
         {
             var service = new SessionService();
 
@@ -110,10 +112,7 @@ namespace Book.Services
             {
                 var orderHeader = await unitOfWork.orderHeaderRepositiory.FindSingleByAsync(x => x.Id == id);
 
-                if (string.IsNullOrWhiteSpace(orderHeader.SessionId))
-                {
-                    throw new Exception("Invalid session ID.");
-                }
+                
 
                 session = service.Get(orderHeader.SessionId); // Ensure the session ID is not null or empty
 
@@ -128,15 +127,13 @@ namespace Book.Services
                 }
 
                 // Retrieve the associated cart
-                Cart cart = (Cart)await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == orderHeader.ApplicationUserId);
-                if (cart == null)
+                 return new OrderSuccessResponse
                 {
-                    throw new Exception("Cart not found.");
-                }
-                List<Cart> cart1 = (List<Cart>)await unitOfWork.cartReposititory.FindByAsync(x => x.ApplicationuserId == orderHeader.ApplicationUserId);
-
-                await unitOfWork.cartReposititory.RemoveRange(cart1);
-                return id;
+                    OrderId = id,
+                    Message = "Order successfully placed and processed.",
+                    PaymentStatus = session.PaymentStatus
+                };
+                ;
             }
             catch (StripeException ex)
             {
@@ -215,7 +212,9 @@ namespace Book.Services
             var userId = userManager.GetUserId(user);
 
             // Fetch orders with related order details and book items
-            var orders = await unitOfWork.orderDetailRepositiory.FindByAsync(x=>x.OrderHeader.ApplicationUserId==userId,includeProperties: "OrderHeader,BookItem"
+            var orders = await unitOfWork.orderDetailRepositiory.FindByAsync(x=>x.OrderHeader.ApplicationUserId==userId && x.OrderHeader.OrderStatus != "Completed"
+             && x.OrderHeader.OrderStatus != "Cancelled"
+, includeProperties: "OrderHeader,BookItem"
             );
 
             foreach (var order in orders)
@@ -262,31 +261,29 @@ namespace Book.Services
         public async Task<bool> CancelOrder(Guid orderDetailId)
         {
             // Fetch the order detail by ID including related OrderHeader
-            var orderDetail = await unitOfWork.orderDetailRepositiory.GetAsync(orderDetailId, includeProperties: "OrderHeader");
+            var orderDetail = await unitOfWork.orderDetailRepositiory
+                .GetAsync(orderDetailId, includeProperties: "OrderHeader");
 
             if (orderDetail == null)
             {
                 return false; // Order detail not found
             }
 
-            // Get the associated OrderHeader
             var orderHeader = orderDetail.OrderHeader;
 
-            // Remove the order detail (Soft delete by default)
-            await unitOfWork.orderDetailRepositiory.DeleteAsync(orderDetail, isHardDelete: false);
-
-            // Check if there are any other order details associated with the same order header
-            var remainingOrderDetails = await unitOfWork.orderDetailRepositiory
+            // Get all related order details
+            var allOrderDetails = await unitOfWork.orderDetailRepositiory
                 .FindByAsync(od => od.OrderHeaderId == orderHeader.Id);
 
-            // If there are no remaining order details, remove the order header as well
-            if (remainingOrderDetails.Any()) // Fixing condition
-            {
-                await unitOfWork.orderHeaderRepositiory.DeleteAsync(orderHeader, isHardDelete: false);
-            }
+            // Delete all order details first
+            await unitOfWork.orderDetailRepositiory.RemoveRange(allOrderDetails);
+
+            // Delete the order header
+            await unitOfWork.orderHeaderRepositiory.DeleteAsync(orderHeader, true);
 
             return true;
         }
+
 
     }
 

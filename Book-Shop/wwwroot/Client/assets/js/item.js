@@ -59,7 +59,8 @@
             return;
         }
 
-        sendAjaxRequest("/WishList/AddWishList", { BookitemId: BookitemId }, "#wishlist-result-message", "Item added to wishlist!", .");
+        // Fix here: Add missing error message argument
+        sendAjaxRequest("/WishList/AddWishList", { BookitemId: BookitemId }, "#wishlist-result-message", "Item added to wishlist!", "Failed to add item to wishlist.");
     });
 
 });

@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Book Store</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/Admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -184,6 +184,12 @@
                                 <img class="img-profile rounded-circle" src="~/Admin/img/user-png-icon-16.jpg" width="30">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-fw mr-2"></i> Settings
+                                </a>
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <a class="dropdown-item" href="@Url.Action("Profile", "Account")">
@@ -220,6 +226,8 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2025</span>
+
                         <span>© 2025, Developed By:Naliyapara Dhara & Achhada Anjali</span>
                     </div>
                 </div>

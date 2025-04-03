@@ -14,7 +14,7 @@ namespace Book.Interfaces.Services
         Task<CartVm>SummeryPage(CartVm cartDto);
         Task<OrderHeader> payementvalue(Guid id, CartVm model, string sessionId, string PaymentId);
         Task<OrderHeader> orderstatus(Guid id, string OrderStatus, string? PayementStatus = null);
-        Task<object> ordersuccess(Guid id);
+        Task<OrderSuccessResponse> ordersuccess(Guid id);
         Task<CartVm> GetallAsync();
         Task<List<CartItemDto>> GetAllCartDetails();
         Task<OrderDetailsDTO> GetOrderDetailsAsync(Guid id);
