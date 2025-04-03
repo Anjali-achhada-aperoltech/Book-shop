@@ -8,20 +8,16 @@ namespace Book_Shop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class SubCategoryController : Controller
+    public class ContactUsController : Controller
     {
-        
-        private readonly ISubCategoryService _subCategoryService;
-        private readonly ICategoryService _CategoryService;
-
-        public SubCategoryController(ISubCategoryService subCategoryService, ICategoryService categoryService)
+        private readonly IContactUsService _contactUsService;
+        public ContactUsController(IContactUsService contactUsService)
         {
-            _subCategoryService = subCategoryService;
-            _CategoryService = categoryService;
+            _contactUsService = contactUsService;
         }
         public async Task<IActionResult> Index()
         {
-            var data = await _subCategoryService.GetAllAsync();
+            var data = await _contactUsService.GetAllAsync();
             if (data == null)
             {
                 return NotFound();
@@ -32,34 +28,25 @@ namespace Book_Shop.Areas.Admin.Controllers
             }
         }
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var categories = await _CategoryService.GetAllAsync();
-            ViewBag.Categories = categories.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-            {
-                Text = c.Name,  
-                Value = c.Id.ToString() 
-            }).ToList();
-
             return View();
         }
-
         [HttpPost]
-        public async Task<IActionResult> Create(SubCategoryDTO subCategory)
+        public async Task<IActionResult> Create(ContactUsDTO c1)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var data = await _subCategoryService.AddAsync(subCategory);
+                    var data = await _contactUsService.AddAsync(c1);
                     if (data == null)
                     {
                         TempData["NameExist"] = "Name is already Exist";
                     }
                     else
                     {
-                        TempData["success"] = "Data Inserted Successfully";
-
+                        TempData["success"] = "Data is inserted successfully";
                         return RedirectToAction("Index");
                     }
                 }
@@ -76,7 +63,8 @@ namespace Book_Shop.Areas.Admin.Controllers
         {
             try
             {
-                var data = await _subCategoryService.GetAsync(id);
+
+                var data = await _contactUsService.GetAsync(id);
                 return View(data);
             }
             catch (Exception ex)
@@ -85,9 +73,9 @@ namespace Book_Shop.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(SubCategoryDTO subCategory)
+        public async Task<IActionResult> Edit(ContactUsDTO c1)
         {
-            var data = await _subCategoryService.UpdateAsync(subCategory);
+            var data = await _contactUsService.UpdateAsync(c1);
             if (data == false)
             {
                 TempData["NameExist"] = "Name already Exist";
@@ -100,9 +88,9 @@ namespace Book_Shop.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(SubCategoryDTO subCategory, Guid id)
+        public async Task<IActionResult> Delete(ContactUsDTO c1, Guid id)
         {
-            var data = await _subCategoryService.DeleteAsync(id);
+            var data = await _contactUsService.DeleteAsync(id);
             if (data == true)
             {
                 TempData["delete"] = "Delete Data Successfully";
@@ -110,11 +98,12 @@ namespace Book_Shop.Areas.Admin.Controllers
             }
             return View(data);
         }
+        [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var data = await _subCategoryService.GetAsync(id);
+            var data = await _contactUsService.GetAsync(id);
             return View(data);
         }
-    }
+    
 }
-
+}

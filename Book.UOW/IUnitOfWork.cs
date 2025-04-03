@@ -10,7 +10,6 @@ namespace Book.UOW
     public interface IUnitOfWork : IDisposable
     {
         ICategoryReposititory CategoryReposititory { get; }
-        ISubCategoryRepository SubCategoryRepository { get; }
         IBookItemsRepositiory bookItemsRepositiory { get; }
         ICartReposititory cartReposititory { get; }
         IOrderHeaderRepositiory orderHeaderRepositiory { get; }

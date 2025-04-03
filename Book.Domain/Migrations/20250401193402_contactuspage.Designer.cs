@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Book.Domain.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20250401163811_contactus")]
-    partial class contactus
+    [Migration("20250401193402_contactuspage")]
+    partial class contactuspage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,6 +204,42 @@ namespace Book.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("ContactUs");
@@ -300,52 +336,6 @@ namespace Book.Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderHeaders");
-                });
-
-            modelBuilder.Entity("Book.Domain.Models.SubCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("SubCategorys");
                 });
 
             modelBuilder.Entity("Book.Domain.Models.WishList", b =>
@@ -471,17 +461,6 @@ namespace Book.Domain.Migrations
                     b.Navigation("OrderHeader");
                 });
 
-            modelBuilder.Entity("Book.Domain.Models.SubCategory", b =>
-                {
-                    b.HasOne("Book_Shop.Models.Category", "Category")
-                        .WithMany("subCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("Book.Domain.Models.WishList", b =>
                 {
                     b.HasOne("Book.Domain.Models.BookItems", "BookItem")
@@ -494,11 +473,6 @@ namespace Book.Domain.Migrations
             modelBuilder.Entity("Book.Domain.Models.BookItems", b =>
                 {
                     b.Navigation("Carts");
-                });
-
-            modelBuilder.Entity("Book_Shop.Models.Category", b =>
-                {
-                    b.Navigation("subCategories");
                 });
 #pragma warning restore 612, 618
         }

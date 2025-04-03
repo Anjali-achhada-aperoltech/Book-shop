@@ -21,7 +21,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BookDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICategoryReposititory, CategoryRepositiory>();
-builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookItemsRepositiory,BookItemsRepostitory>();
 builder.Services.AddScoped<IBookItemService, BookItemsService>();
